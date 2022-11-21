@@ -77,7 +77,7 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
 
-&nbsp;&nbsp;&nbsp;&nbsp; # Encoder
+# Encoder
 
 The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. 
 
@@ -91,7 +91,7 @@ The ```freeze_grad``` function is there if you need to tailor how many (if any) 
 
 The purpose of the resulting feature map is to provide a latent space representation of each frame, from which the decoder can draw multiple conclusions.
 
-Any ResNet architecture (any depth) will work here.
+Any ResNet architecture (any depth) will work here. &nbsp;&nbsp;&nbsp;&nbsp;
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
