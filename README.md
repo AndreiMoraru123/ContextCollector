@@ -44,6 +44,27 @@ One of the very newest (time of writing: fall 2022) is [Google's LM-Nav](https:/
 
 As the official dataset homespage states, "COCO is a large-scale object detection, segmentation, and captioning dataset".
 
+For this particular model, I am concerned with detection and captioning.
+
+Before the ```CocoDataset``` can be created in the ```cocodata.py``` file, a ```vocabulary``` instance of the ```Vocabulary``` class has to be constructed using the ```vocabulary.py``` file. This can be conveniently done using the ```tokenize``` function of of ```nltk``` module.
+
+The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash map structures (Python Dictionaries), ```word2idx``` and ```idx2word```.
+
+As per most sequence models, the vocab has to have a known ```<start>``` token, as well as an ```<end>``` one. An ```<unk>``` token for the unknown words, yet to be added to the file acts as a selector for what gets in. 
+
+The vocabulary is, of course, built on the COCO annotations available for the images.
+
+:point_right: The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
+
+For this reason, two vocab "hyper-params" can be tuned:
+
+```python
+word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less than 6 times, it is discarded)
+vocab_from_file = False  # if True, load existing vocab file. If False, create vocab file from scratch
+```
+
+and, because the inference depends on the built vocabulary, the ```word_treshold``` can be set only while ```training``` mode, and the ```vocab_from_file``` trigger can only be set to ```True``` while in ```testing``` mode.
+
 ![p5](https://user-images.githubusercontent.com/81184255/203030454-9c023413-e532-444f-9b97-ae4ee14034f1.gif)
 
 ## Model description
