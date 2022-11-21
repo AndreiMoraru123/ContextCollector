@@ -72,7 +72,7 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 ## Model description
 
 ### 1. [Encoder](##encoder)
-### 2. Attention Network
+### 2. [Attention Network](##attention)
 ### 3. Decoder
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
@@ -87,7 +87,9 @@ However, since PyTorch deals with it using implicitly using ```CrossEntropyLoss`
 
 The ```freeze_grad``` function is there if you need to tailor how many (if any) of the encoder layers do you want to train (optional, since the Net is pretrained).
 
-&nbsp;&nbsp;&nbsp;&nbsp; ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
+![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
+
+## Attention
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
