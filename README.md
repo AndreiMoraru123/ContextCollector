@@ -27,7 +27,7 @@ Frame goes in, caption comes out.
 ## Model description
 
 ### 1. [Encoder](#encoder)
-### 2. Atenntion Network
+### 2. Attention Network
 ### 3. Decoder
 
 # Encoder
