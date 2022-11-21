@@ -141,12 +141,13 @@ The main idea of the model workflow is that the Encoder is passing a "context" f
 
 The attention weighted encoding is gated through a sigmoid activation and the resulting values are added to the embedding of the previous word. This concatenation is then passed as the input to an ```LSTMCell```, along with the previous hidden state.
 
+![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
+
+
 ## The LSTM Cell
 
 ![lstm](https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg)
 
-
-![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
