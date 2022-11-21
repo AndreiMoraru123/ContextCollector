@@ -1,2 +1,3 @@
-# ContextCollector
-A mixed vision-language model that gets better by making mistakes
+# COCO Context Collector
+
+### This mixed vision-language model gets better by making mistakes
