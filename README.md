@@ -1,15 +1,17 @@
 # COCO Context Collector
 
-## It's a contextualizer, trained on COCO! :zany_face:
+## It's a COntextualizer, trained on COCO! See what I did there ? :zany_face:
 
 ### This mixed vision-language model gets better by making mistakes
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
 
-### This is the improved version of the original Watch&Tell project. 
+This is the improved version of the original Watch&Tell project. 
 Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to see what was improved and how to deal with the [Microsoft COCO dataset](https://cocodataset.org/#home).
 
-### Trained on the 2017 challenge image and captions with a custom data split.
+Trained on the supervised 2017 challenge of image-caption paris, using a custom data split and vocabulary generator.
+
+Explained in depth further in the ```README```.
 
 ![p2](https://user-images.githubusercontent.com/81184255/203030363-57e342d2-6d74-4600-ae86-c09079f8ff22.gif)
 
