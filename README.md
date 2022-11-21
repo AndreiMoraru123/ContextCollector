@@ -30,13 +30,13 @@ The functional purpose of this project could be summed up as *Instance Captionin
 
 The deeper motivation for working on this is, however, more profound:
 
-For decades, language and vision were treated as completely different problems and naturally, the engineered paths that have emerged to provide solutions for them were divergent to begin with.
+For decades, language and vision were treated as completely different problems and naturally, the paths of engineering that have emerged to provide solutions for them were divergent to begin with.
 
 Neural networks, while perhaps the truce between the two, as their application in deep learning considerably improved both language and vision, still today rely mostly on different techniques for each task, as if language and vision would be disconnected from one another. 
 
-The latest show in town, the Transformer architecture, has provided a great advancement into the world of language models, following the original paper [___Attention is All You Need___](https://arxiv.org/abs/1706.03762) that paved the way to models like [___GPT-3___](https://arxiv.org/abs/2005.14165), and while the success has not been completely transferred to vision, some breakthroughs have been made [___An Image is Worth 16x16 Words___](https://arxiv.org/abs/2010.11929), [___SegFormer___](https://arxiv.org/abs/2105.15203), [___DINO___](https://arxiv.org/abs/2104.14294).
+The latest show in town, the Transformer architecture, has provided a great advancement into the world of language models, following the original paper [___Attention is All You Need___](https://arxiv.org/abs/1706.03762) that paved the way to models like [___GPT-3___](https://arxiv.org/abs/2005.14165), and while the success has not been completely transferred to vision, some breakthroughs have been made: [___An Image is Worth 16x16 Words___](https://arxiv.org/abs/2010.11929), [___SegFormer___](https://arxiv.org/abs/2105.15203), or [___DINO___](https://arxiv.org/abs/2104.14294).
 
-One of the very newest (time of writing: fall 2022) is [Google's LM-Nav](https://sites.google.com/view/lmnav?pli=1), a Large Vision + Language model used for robotic navigation. What is thought provoking about this project is the ability of a combined V+L model to "understand" the words better than a V or L model would do on their own. Perhaps human intelligence itself is the sum of smaller combined intelligent models. The robot is presented with conflicting scenarios and is able to even "tell" if a promp makes sense as a navigational instruction.
+One of the very newest (time of writing: fall 2022) is [Google's LM-Nav](https://sites.google.com/view/lmnav?pli=1), a Large Vision + Language model used for robotic navigation. What is thought provoking about this project is the ability of a combined V+L model to "understand" the world better than a V or L model would do on their own. Perhaps human intelligence itself is the sum of smaller combined intelligent models. The robot is presented with conflicting scenarios and is able to even "tell" if a prompt makes sense as a navigational instruction or is impossible to fulfil.
 
 ![p4](https://user-images.githubusercontent.com/81184255/203030436-eb2e37bd-6b83-45bc-84a6-a527c52bb765.gif)
 
