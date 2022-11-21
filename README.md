@@ -91,7 +91,7 @@ The ```freeze_grad``` function is there if you need to tailor how many (if any) 
 
 The purpose of the resulting feature map is to provide a latent space representation of each frame, from which the decoder can draw multiple conclusions.
 
-Any ResNet architecture (any depth) will work here, but keep in mind memory constraints for inference.
+Any ResNet architecture (any depth) will work here, as well as some of the other predating CNNs (the paper used VGG), but keep in mind memory constraints for inference.
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
