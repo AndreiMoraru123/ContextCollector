@@ -27,3 +27,9 @@
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
 
 ![p13](https://user-images.githubusercontent.com/81184255/203032125-af4328cd-4ff2-4eb2-a66d-61807fbbb925.gif)
+
+![p14](https://user-images.githubusercontent.com/81184255/203032384-3a2cb769-bc94-45e0-9048-e6eecbe75fd6.gif)
+
+![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
+
+![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
