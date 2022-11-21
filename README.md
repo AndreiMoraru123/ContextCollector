@@ -26,9 +26,11 @@ Frame goes in, caption comes out.
 
 ## Model description
 
-### 1. Encoder
+### 1. Encoder(#encoder)
 ### 2. Atenntion Network
 ### 3. Decoder
+
+#Encoder
 
 ![p4](https://user-images.githubusercontent.com/81184255/203030436-eb2e37bd-6b83-45bc-84a6-a527c52bb765.gif)
 
