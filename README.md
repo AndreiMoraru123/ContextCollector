@@ -123,7 +123,14 @@ I am using pretty much the same decoder proposed in the greatly elaborated [Imag
 
 The aformentioned implementation is self sufficient, but I will further explain how the decoder works for the purpose of this particular project, as well as the statements above.
 
-The main idea of the model workflow is that the Encoder is passing a "context" feature to the decoder, which in turn produces an output. Since the decoder is an RNN, so the outputs will be given in sequences 
+The main idea of the model workflow is that the Encoder is passing a "context" feature to the decoder, which in turn produces an output. Since the decoder is an RNN, so the outputs will be given in sequences. The recurrent network can take into account the inputed features as well as it's own hidden state.
+
+The attention weighted encoding is gated through a sigmoid activation and the resulting values are added to the embedding of the previous word. This concatenation is then passed as the input to an ```LSTMCell```, along with the previous hidden state.
+
+## The LSTM Cell
+
+![lstm](https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg)
+
 
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
 
