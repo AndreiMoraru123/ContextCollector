@@ -73,8 +73,8 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-### 1. [The Encoder](#the_encoder)
-### 2. [Attention Network](#attention_network)
+### 1. [The Encoder](#the encoder)
+### 2. [Attention Network](#attention network)
 ### 3. The Decoder
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
