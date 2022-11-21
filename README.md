@@ -75,11 +75,12 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 ### 2. Attention Network
 ### 3. Decoder
 
-<img align="left" width="200" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
+<img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
 
 ## Encoder
 
 The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
+
 
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
