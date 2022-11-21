@@ -73,13 +73,13 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-### 1. [Encoder](#encoder)
-### 2. [Attention Network](#attention)
-### 3. Decoder
+### 1. [The Encoder](#the_encoder)
+### 2. [Attention Network](#attention_network)
+### 3. The Decoder
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
 
-# Encoder
+# The Encoder
 
 The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
 
@@ -95,7 +95,7 @@ Any ResNet architecture (any depth) will work here, as well as some of the other
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
-# Attention
+# Attention Network
 
 "One important property of human perception is that one does not tend to process a whole scene
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
