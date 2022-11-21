@@ -26,8 +26,6 @@ Frame goes in, caption comes out.
 
 ## Motivation
 
-As the official dataset homespage states, "COCO is a large-scale object detection, segmentation, and captioning dataset".
-
 The functional purpose of this project could be summed *Instance Captioning*, as in not trying to caption the whole frame, but only parts of it. This approach is not only going to be faster (because the model is not trying to encode the whole image), but can also prove more reliable for video inference, through a very simple mechanism I will call "expansion". 
 
 The deeper motivation for working on this is, however, more profound:
@@ -43,6 +41,8 @@ One of the very newest (time of writing: fall 2022) is [Google's LM-Nav](https:/
 ![p4](https://user-images.githubusercontent.com/81184255/203030436-eb2e37bd-6b83-45bc-84a6-a527c52bb765.gif)
 
 ## Vocabulary and Data
+
+As the official dataset homespage states, "COCO is a large-scale object detection, segmentation, and captioning dataset".
 
 ![p5](https://user-images.githubusercontent.com/81184255/203030454-9c023413-e532-444f-9b97-ae4ee14034f1.gif)
 
