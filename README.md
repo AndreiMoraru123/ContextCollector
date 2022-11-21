@@ -180,11 +180,9 @@ The attention weighted encoding is gated through a sigmoid activation and the re
 
 # Some more examples
 
-![p1m](https://user-images.githubusercontent.com/81184255/203170021-4a79a4c4-748b-4f80-8b79-abca59cd4466.gif)
-
-![p2m](https://user-images.githubusercontent.com/81184255/203170974-2881a3c8-6c60-4d6e-886f-b31020e6ce03.gif)
-
-![p3m](https://user-images.githubusercontent.com/81184255/203170981-a1619ae3-3ad0-4866-ab7f-5e59f4604c92.gif)
+Witness          |  The          | Perspective
+:-------------------------:|:-------------------------:|:-------------------------
+![p1m](https://user-images.githubusercontent.com/81184255/203171977-04178a2a-0b08-4114-af66-eb65662cf578.gif) | ![p2m](https://user-images.githubusercontent.com/81184255/203172037-2e26db28-9745-4f12-88f1-b6a1b8143356.gif) | ![p3m](https://user-images.githubusercontent.com/81184255/203172063-cadc682a-529d-413d-a7d5-343bbd66af71.gif)
 
 
 
