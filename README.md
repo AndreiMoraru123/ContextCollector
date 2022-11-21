@@ -95,9 +95,9 @@ Any ResNet architecture (any depth) will work here, but keep in mind memory cons
 
 # Attention
 
-" One important property of human perception is that one does not tend to process a whole scene
+"One important property of human perception is that one does not tend to process a whole scene
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
-acquire information when and where it is needed" - [___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247)
+acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
