@@ -24,24 +24,21 @@ Frame goes in, caption comes out.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
-# Data description
-
-## 1. [Coco Dataset](#coco_dataset)
-## 2. Vocabulary
-
-# Coco Dataset
+# The COCO Dataset
 
 ![p4](https://user-images.githubusercontent.com/81184255/203030436-eb2e37bd-6b83-45bc-84a6-a527c52bb765.gif)
 
-# Model description
-
-## 1. [Encoder](#encoder)
-## 2. Attention Network
-## 3. Decoder
-
-# Encoder
+# Vocabulary Builder
 
 ![p5](https://user-images.githubusercontent.com/81184255/203030454-9c023413-e532-444f-9b97-ae4ee14034f1.gif)
+
+## Model description
+
+### 1. [Encoder](#encoder)
+### 2. Attention Network
+### 3. Decoder
+
+# Encoder
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
