@@ -4,7 +4,8 @@ from cv2 import cuda
 from pipeline import *
 import imutils
 
-cuda.setDevice(0)
+if cuda.getCudaEnabledDeviceCount() > 0:
+    cuda.setDevice(0)
 
 cfgfile = "YOLO/yolov4-tiny.cfg"
 weightfile = "YOLO/yolov4-tiny.weights"
