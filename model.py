@@ -20,7 +20,7 @@ class EncoderCNN(nn.Module):
         super(EncoderCNN, self).__init__()
         self.encoded_image_size = encoded_image_size
         resnet = models.resnet152(weights=models.ResNet152_Weights.DEFAULT)  # to try: wide_resnet101_2
-        modules = list(resnet.children())[:-2]  # remove softmax and final linear layer
+        modules = list(resnet.children())[:-2]  # remove avg-pool and fc layers
         self.resnet = nn.Sequential(*modules)
         self.adaptive_pool = nn.AdaptiveAvgPool2d((self.encoded_image_size, self.encoded_image_size))
         self.freeze_grad()  # freeze all the parameters but the last few layers
