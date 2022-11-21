@@ -154,11 +154,11 @@ The attention weighted encoding is gated through a sigmoid activation and the re
 
 ![p10](https://user-images.githubusercontent.com/81184255/203031587-69629719-fc88-4c1b-8ce5-76dc9b89aa36.gif)
 
-## YOLO
+## Beam Search
 
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
-## Perspective Expansion
+## YOLO and the Perspective Expansion
 
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
 
