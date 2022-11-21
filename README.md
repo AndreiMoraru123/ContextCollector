@@ -18,6 +18,8 @@ Explained in depth further down in this ```README```.
 
 ### Based on the original paper: [___Show, Attend and Tell___](https://arxiv.org/abs/1502.03044)
 
+![image](https://user-images.githubusercontent.com/81184255/203050946-530925ef-e7a9-4d82-8d55-0126c6fbbcdf.png)
+
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
 ![p4](https://user-images.githubusercontent.com/81184255/203030436-eb2e37bd-6b83-45bc-84a6-a527c52bb765.gif)
