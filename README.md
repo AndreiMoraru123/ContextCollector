@@ -1,6 +1,6 @@
 # COCO Context Collector
 
-## It's a COntextualizer, trained on COCO! See what I did there ? :zany_face:
+## It's a COntextualizer, trained on COCO! See what I did there? :zany_face:
 
 ### This mixed vision-language model gets better by making mistakes
 
@@ -11,7 +11,7 @@ Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to s
 
 Trained on the supervised 2017 challenge of image-caption paris, using a custom data split and vocabulary generator.
 
-Explained in depth further in the ```README```.
+Explained in depth further down in this ```README```.
 
 ![p2](https://user-images.githubusercontent.com/81184255/203030363-57e342d2-6d74-4600-ae86-c09079f8ff22.gif)
 
