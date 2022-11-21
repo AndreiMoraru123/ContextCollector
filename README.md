@@ -119,8 +119,11 @@ The formula for the Bahdanau Attention is the essentially the following:
 
 ```
 alpha = softmax((W1 * h) + (W2 * s))
-```    
+```
+
 where h is the output of the encoder, s is the hidden previous state of the decoder, and W1 and W2 are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
+
+Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
