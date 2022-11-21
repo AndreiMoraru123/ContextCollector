@@ -87,6 +87,8 @@ However, since PyTorch deals with it using implicitly using ```CrossEntropyLoss`
 
 The ```freeze_grad``` function is there if you need to tailor how many (if any) of the encoder layers do you want to train (optional, since the Net is pretrained).
 
+The purpose of the resulting feature map is to provide a latent space representation of each frame, from which the decoder can draw multiple conclusions.
+
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
 # Attention
