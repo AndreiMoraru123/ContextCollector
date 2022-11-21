@@ -79,9 +79,7 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 
 # Encoder
 
-The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. 
-
-The original paper proposed an encoded size of 14. 
+The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
 
 As ResNet was originally designed as a classifier, the last layer is going to be the activation function ```Softmax```. 
 
