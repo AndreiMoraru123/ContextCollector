@@ -73,6 +73,8 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
+As found in the [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
+
 ### 1. [The CNN Encoder](#encoder)
 ### 2. [The Attention Network](#attention)
 ### 3. [The RNN Decoder](#decoder)
@@ -112,6 +114,13 @@ Since the encoder is already trained and can output a competent feature map (we 
 ## What kind?
 
 The original paper, as well as this implementation use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
+
+The formula for the Bahdanau Attention is the essentially the following:
+
+```
+    alpha = softmax((W1 * h) + (W2 * s))
+```    
+where h is the output of the encoder, s is the hidden previous state of the decoder, and W1 and W2 are trainable weight matrices. A single number is then produced. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
