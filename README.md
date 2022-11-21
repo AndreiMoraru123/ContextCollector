@@ -111,6 +111,8 @@ Since the encoder is already trained and can output a competent feature map (we 
 
 ## What kind?
 
+The original paper, as well as this implementation use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
+
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
 # Decoder
