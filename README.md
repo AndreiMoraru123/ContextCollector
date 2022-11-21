@@ -71,13 +71,33 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 
 ## Model description
 
-### 1. [Encoder](##encoder)
-### 2. Attention Network
+### 1. [Encoder](#encoder)
+### 2. [Attention Network](#attention)
 ### 3. Decoder
 
-## Encoder
+<img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
+
+# Encoder
+
+The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
+
+As ResNet was originally designed as a classifier, the last layer is going to be the activation function ```Softmax```. 
+
+However, since PyTorch deals with it using implicitly using ```CrossEntropyLoss```, the only layers that need to be beheaded are the last linear fully connected layer and the average pool layer, which will be replaced by the custom average pool layer, for which we you and I can choose the pooling size. 
+
+The ```freeze_grad``` function is there if you need to tailor how many (if any) of the encoder layers do you want to train (optional, since the Net is pretrained).
+
+The purpose of the resulting feature map is to provide a latent space representation of each frame, from which the decoder can draw multiple conclusions.
+
+Any ResNet architecture (any depth) will work here, but keep in mind memory constraints for inference.
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
+
+# Attention
+
+"One important property of human perception is that one does not tend to process a whole scene
+in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
+acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
