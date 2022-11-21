@@ -16,6 +16,8 @@ Built using PyTorch :fire:
 
 Explained in depth further down in this ```README```.
 
+[Click here to see some more examples](#some-more-examples)
+
 ![p2](https://user-images.githubusercontent.com/81184255/203030363-57e342d2-6d74-4600-ae86-c09079f8ff22.gif)
 
 #### Based on the original paper: [___Show, Attend and Tell___](https://arxiv.org/abs/1502.03044)
