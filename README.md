@@ -84,6 +84,7 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
 
 
+&nbsp; &nbsp; &nbsp; &nbsp;
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
