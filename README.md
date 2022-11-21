@@ -48,7 +48,7 @@ As the official dataset homespage states, "COCO is a large-scale object detectio
 
 For this particular model, I am concerned with detection and captioning.
 
-Before the ```CocoDataset``` can be created in the ```cocodata.py``` file, a ```vocabulary``` instance of the ```Vocabulary``` class has to be constructed using the ```vocabulary.py``` file. This can be conveniently done using the ```tokenize``` function of of ```nltk``` module.
+Before the ```CocoDataset``` can be created in the ```[cocodata.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/cocodata.py)``` file, a ```vocabulary``` instance of the ```Vocabulary``` class has to be constructed using the ```[vocabulary.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/vocabulary.py)``` file. This can be conveniently done using the ```tokenize``` function of of ```nltk``` module.
 
 The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash map structures (Python Dictionaries), ```word2idx``` and ```idx2word```.
 
@@ -66,6 +66,8 @@ vocab_from_file = False  # if True, load existing vocab file. If False, create v
 ```
 
 and, because the inference depends on the built vocabulary, the ```word_treshold``` can be set only while ```training``` mode, and the ```vocab_from_file``` trigger can only be set to ```True``` while in ```testing``` mode.
+
+Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can then be later loaded for inference.
 
 ![p5](https://user-images.githubusercontent.com/81184255/203030454-9c023413-e532-444f-9b97-ae4ee14034f1.gif)
 
