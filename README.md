@@ -75,11 +75,7 @@ and, because the inference depends on the built vocabulary, the ```word_treshold
 ### 2. Attention Network
 ### 3. Decoder
 
-<img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
-
-<pre>
-
-</pre>
+<img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" /> &nbsp;&nbsp;&nbsp;&nbsp;
 
 ## Encoder
 
