@@ -97,9 +97,19 @@ Any ResNet architecture (any depth) will work here, as well as some of the other
 
 # Attention
 
+## Why?
+
 "One important property of human perception is that one does not tend to process a whole scene
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
 acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
+
+The great gain of using attention as a mechanism in the decoder is that the importantce the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space. Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the decoder. The results are reallly actually astounding when compared to an attention-less network (see previous project). 
+
+## Where?
+
+Since the encoder is already trained and can output a competent feature map (we know that ResNet can classify images), the mechanism of attention is used to augument the behaviour of the RNN decoder. During the training phase, the decoder learns which parts of the latent space make up the "context" of an image. The selling point of this approach is based on the fact that the learning is not done in a simple, sequential manner, but some non-linear interpolations can occur in such a way that you could make a strong point for convincing someone that the model has actually "understood" the task.
+
+## What kind?
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
@@ -112,6 +122,8 @@ I am using pretty much the same decoder proposed in the greatly elaborated [Imag
 3. I am more lax with using incomplete captions in the beam search and I am also not concerned with visualizing the attention weights
 
 The aformentioned implementation is self sufficient, but I will further explain how the decoder works for the purpose of this particular project, as well as the statements above.
+
+The main idea of the model workflow is that the Encoder is passing a "context" feature to the decoder, which in turn produces an output. Since the decoder is an RNN, so the outputs will be given in sequences 
 
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
 
