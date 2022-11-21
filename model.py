@@ -111,13 +111,6 @@ class DecoderRNN(nn.Module):
         self.fc.bias.data.fill_(0)  # initialize linear layer with bias = 0
         self.fc.weight.data.uniform_(-0.1, 0.1)
 
-    def load_pretrained_embeddings(self, embeddings):
-        self.embedding.weight = nn.Parameter(embeddings)  # load embedding layer with pre-trained embeddings
-
-    def fine_tune_embeddings(self, fine_tune=True):
-        for p in self.embedding.parameters():
-            p.requires_grad = fine_tune
-
     def init_hidden_state(self, encoder_out):
         mean_encoder_out = encoder_out.mean(dim=1)  # get the mean because of adaptive average pooling
         h = self.init_h(mean_encoder_out)  # (batch_size, decoder_dim)
