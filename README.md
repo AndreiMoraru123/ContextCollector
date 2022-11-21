@@ -52,7 +52,7 @@ Before the ```CocoDataset``` can be created in the [cocodata.py](https://github.
 
 The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash map structures (Python Dictionaries), ```word2idx``` and ```idx2word```.
 
-As per most sequence models, the vocab has to have a known ```<start>``` token, as well as an ```<end>``` one. An ```<unk>``` token for the unknown words, yet to be added to the file acts as a selector for what gets in. 
+As per all sequence to sequence models, the vocab has to have a known ```<start>``` token, as well as an ```<end>``` one. An ```<unk>``` token for the unknown words, yet to be added to the file acts as a selector for what gets in. 
 
 The vocabulary is, of course, built on the COCO annotations available for the images.
 
