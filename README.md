@@ -10,7 +10,7 @@ This is the improved version of the original [Watch&Tell project](https://github
 
 Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to see what was improved and how to deal with the [Microsoft COCO dataset](https://cocodataset.org/#home).
 
-Trained on the supervised 2017 challenge of image-caption paris, using a custom data split and vocabulary generator.
+Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
 
 Explained in depth further down in this ```README```.
 
