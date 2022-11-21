@@ -177,3 +177,14 @@ The attention weighted encoding is gated through a sigmoid activation and the re
 ## Optimization
 
 ![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
+
+# Examples
+
+![p1m](https://user-images.githubusercontent.com/81184255/203170021-4a79a4c4-748b-4f80-8b79-abca59cd4466.gif)
+
+![p2m](https://user-images.githubusercontent.com/81184255/203170974-2881a3c8-6c60-4d6e-886f-b31020e6ce03.gif)
+
+![p3m](https://user-images.githubusercontent.com/81184255/203170981-a1619ae3-3ad0-4866-ab7f-5e59f4604c92.gif)
+
+
+
