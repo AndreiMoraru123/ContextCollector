@@ -24,7 +24,7 @@ Frame goes in, caption comes out.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
-## Model
+## Model description
 
 * Encoder
 * Atenntion Network
