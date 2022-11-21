@@ -135,4 +135,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    predict_video(args.video)
+    predict_video(args.video, args.expand, args.backend, args.k, args.conf, args.nms)

@@ -9,6 +9,7 @@ from torchvision import transforms
 import torch.backends.cudnn as cudnn
 import sys
 import math
+import argparse
 
 sys.path.append('PythonAPI')
 dataDir = r'D:/WatchAndTellCuda/'
@@ -20,19 +21,7 @@ log_file = 'training_log.txt'
 coco = COCO(annFile)
 torch.cuda.empty_cache()
 
-embed_size = 300
-attention_dim = 300
-decoder_dim = 300
-dropout = 0.5
-
 cudnn.benchmark = True  # enable benchmarking optimization in cudnn
-
-batch_size = 22
-word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less than 6 times, it is discarded)
-vocab_from_file = True  # if True, load existing vocab file
-num_epochs = 3
-save_every = 1  # save every 1 epochs
-print_every = 100  # print training/validation stats every 100 batches
 
 transform_train = transforms.Compose([
     transforms.Resize((480, 480)),
@@ -44,29 +33,29 @@ transform_train = transforms.Compose([
                          (0.229, 0.224, 0.225))
 ])
 
-data_loader = get_loader(transform=transform_train,
-                         mode='train',
-                         batch_size=batch_size,
-                         vocab_threshold=word_threshold,
-                         vocab_from_file=vocab_from_file)
 
-vocab_size = len(data_loader.dataset.vocab)
+def train(embed_size=300, attention_dim=300, decoder_dim=300, dropout=0.5, num_epochs=5,
+          batch_size=22, word_threshold=6, vocab_from_file=True, save_every=1, print_every=100):
 
-encoder = EncoderCNN()
-decoder = DecoderRNN(attention_dim, embed_size, decoder_dim, vocab_size, dropout=dropout)
+    data_loader = get_loader(transform=transform_train,
+                             mode='train',
+                             batch_size=batch_size,
+                             vocab_threshold=word_threshold,
+                             vocab_from_file=vocab_from_file)
 
-encoder.to(device)
-decoder.to(device)
+    vocab_size = len(data_loader.dataset.vocab)
 
-criterion = nn.CrossEntropyLoss().cuda() if torch.cuda.is_available() else nn.CrossEntropyLoss()
-params = list(decoder.parameters())  # only train the decoder params
-optimizer = torch.optim.Adam(params, lr=0.001)
-# total number of training steps
-total_step = math.ceil(len(data_loader.dataset.caption_lengths) / data_loader.batch_sampler.batch_size)
+    encoder = EncoderCNN()
+    decoder = DecoderRNN(attention_dim, embed_size, decoder_dim, vocab_size, dropout=dropout)
 
+    encoder.to(device)
+    decoder.to(device)
 
-if __name__ == '__main__':
-
+    criterion = nn.CrossEntropyLoss().cuda() if torch.cuda.is_available() else nn.CrossEntropyLoss()
+    params = list(decoder.parameters())  # only train the decoder params
+    optimizer = torch.optim.Adam(params, lr=0.001)
+    # total number of training steps
+    total_step = math.ceil(len(data_loader.dataset.caption_lengths) / data_loader.batch_sampler.batch_size)
     print('Training on:', device)
 
     with open(log_file, 'w') as f:
@@ -107,3 +96,26 @@ if __name__ == '__main__':
                     'models', 'decoder-{}-300.ckpt'.format(epoch)))
                 torch.save(encoder.state_dict(), os.path.join(
                     'models', 'encoder-{}-300.ckpt'.format(epoch)))
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--embed_size', type=int, default=300, help='dimension of word embedding vectors')
+    parser.add_argument('--attention_dim', type=int, default=300, help='dimension of attention linear layers')
+    parser.add_argument('--decoder_dim', type=int, default=300, help='dimension of decoder RNN')
+    parser.add_argument('--dropout', type=float, default=0.5, help='dropout')
+    parser.add_argument('--num_epochs', type=int, default=5, help='number of epochs')
+    parser.add_argument('--batch_size', type=int, default=22, help='batch size, important for memory')
+    parser.add_argument('--word_threshold', type=int, default=6, help='minimum word count threshold')
+    parser.add_argument('--vocab_from_file', type=bool, default=True,
+                        help='if True, load existing vocab file. If False, create vocab file from scratch')
+    parser.add_argument('--save_every', type=int, default=1, help='save every n epochs')
+    parser.add_argument('--print_every', type=int, default=100, help='print every n steps')
+
+    args = parser.parse_args()
+
+    train(embed_size=args.embed_size, attention_dim=args.attention_dim, decoder_dim=args.decoder_dim,
+          dropout=args.dropout, num_epochs=args.num_epochs, batch_size=args.batch_size,
+          word_threshold=args.word_threshold, vocab_from_file=args.vocab_from_file,
+          save_every=args.save_every, print_every=args.print_every)
