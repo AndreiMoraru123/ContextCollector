@@ -20,6 +20,8 @@ Explained in depth further down in this ```README```.
 
 Frame goes in, caption comes out.
 
+![image](https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png)
+
 <img src="https://user-images.githubusercontent.com/81184255/203050946-530925ef-e7a9-4d82-8d55-0126c6fbbcdf.png" width="1000" height="500"/>
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
