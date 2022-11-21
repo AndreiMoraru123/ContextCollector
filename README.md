@@ -73,9 +73,9 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-### 1. [The Encoder](#encoder)
-### 2. [Attention Network](#attention)
-### 3. The Decoder
+### 1. [The CNN Encoder](#encoder)
+### 2. [The Attention Network](#attention)
+### 3. [The RNN Decoder](#decoder)
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
 
@@ -102,6 +102,8 @@ in its entirety at once. Instead humans focus attention selectively on parts of 
 acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
+
+# Decoder
 
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
 
