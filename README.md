@@ -105,13 +105,13 @@ acquire information when and where it is needed" -- <cite>[___Recurrent Models o
 
 # Decoder
 
-I am using the LSTM based decoder elaborated in the greatly elaborated [Image Captioning repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) with some caveats. Precisely:
+I am using pretty much the same decoder proposed in the greatly elaborated [Image Captioning repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) with some caveats. Precisely:
 
 1. I do not use padded sequences for the captions
 2. I tailored tensor dimensions and types for a different pipeline (and dataset as well, the repo uses COCO 2014), so you may see differences
-3. I am more lax with using incomplete captions in the beam search and I am also not concerned with visualizing the attention weights for this implementation
+3. I am more lax with using incomplete captions in the beam search and I am also not concerned with visualizing the attention weights
 
-That being said, I will explain how the decoder works for the purpose of this particular project.
+The aformentioned implementation is self sufficient, but I will further explain how the decoder works for the purpose of this particular project, as well as the statements above.
 
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
 
