@@ -343,8 +343,7 @@ My configuration is the following:
 </p>
 
 I am using:
-* a turing Geforce GTX 1660 TI with 6GB of memory
-* CUDA arch bin of 7.5
+* a turing Geforce GTX 1660 TI with 6GB of memory (CUDA arch bin of 7.5)
 * CUDA 11.7
 * cuDNN 8.5 (so that it works with OpenCV 4.5.2) 
 
