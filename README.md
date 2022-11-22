@@ -272,7 +272,7 @@ But "real life" videos are different, each frame is related to the previous one 
 
 I provided some model ```pruning``` functions in the ```pipeline.py``` file, both structured and unstructured (global and local), but I use neither and do not recommend them as they are now. You could achieve faster inference by cutting out neurons or connections, but you will also hinder the performance.
 
-I highly avoid structured pruning, as it will just wipe out most of the learned vocabulary, at no speed gains.
+I highly avoid structured pruning (both L1 and L2), as it will just wipe out most of the learned vocabulary, at no speed gains.
 
 Example:
 
@@ -283,7 +283,7 @@ a <unk> <unk> <unk> <unk> <unk> <unk> <unk> <unk> <unk> .
 a <unk> <unk> <unk> <unk> <unk> <unk> <unk> .
 ```
 
-While unstructed pruning is safer:
+While unstructured (both local and global) pruning is safer:
 
 ```
 a man on a motorcycle in the grass .
@@ -293,6 +293,18 @@ a person on a motorcycle in the woods .
 ```
 
 But no more performant in terms of speed
+
+Local pruning works layer by layer across every layer, while global pruning wipes across all layers indiscriminately. But for the purpose of this model, they both produce no gain.
+
+Unstructured pruning is by default L1, because the wieghts are sorted one after the other.
+
+the ```JIT``` compiler can be used to increase the performance using the ```optimized_execution```. However, this does not always result in a smaller model, and it could in fact make the network increase in size. 
+
+Neither ```torch.jit``` nor ```onnx``` converters can be used on the decoder, because it is very customized, and these operations for now require strong tensor typing, and are not very permissive to custom architectures, so I resorted to only tracing the ResNet encoder (which also cannot be inferenced using ```onnxruntime```, because of the custom average pooling layer). 
+
+As you can start to see, there are not really any out of the box solutions for these types of things yet.
+
+The rest of the inference pipeline just loads the ```state_dicts``` of each model and runs the data stream through them using a pretty standard ```test_transform``` and dealing with the expansion of the ROI.
 
 ![p13](https://user-images.githubusercontent.com/81184255/203032125-af4328cd-4ff2-4eb2-a66d-61807fbbb925.gif)
 
