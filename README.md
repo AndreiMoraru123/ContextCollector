@@ -263,9 +263,9 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
 
 ## YOLO and the Perspective Expansion
 
-Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, and will perform as such on the testing set. 
+Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, focused mainly on a single event, and thus  will perform as such on the testing set. 
 
-But "real life" videos are different, each frame is related to the previous one and not all of them have much going on.
+But "real life" videos are different, each frame is related to the previous one and not all of them have much going on in one place, but rather many things happening at once.
 
 * For this reason, I use [a tiny YOLOv4](https://github.com/AndreiMoraru123/ContextCollector/tree/main/YOLO) to get an initial object of interest in the frame. 
 * A caption is then generated for the region of interest (ROI) bounded by the YOLO generated box
