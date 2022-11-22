@@ -259,7 +259,7 @@ Trying to output a caption for each frame of a video can be painful, even with a
 
 But "real life" videos are different, each frame is related to the previous one and not all of them have much going on.
 
-* For this reason, I use [YOLOv4](https://arxiv.org/abs/2004.10934) to get an initial object of interest in the frame. 
+* For this reason, I use [a tiny YOLOv4](https://arxiv.org/abs/2004.10934) (weights and config available in folder) to get an initial object of interest in the frame. 
 * A caption is then generated for the region of interest (ROI) bounded by the YOLO generated box
 * If the prediction is far off the truth (no word in the sentence matches the label output by the detector), the algo expands the ROI by a given factor until it does or until a certain number of tries have been made, to avoid infinite loops
 * Using the newly expanded ROI, the model is able to get more context out of the frame
