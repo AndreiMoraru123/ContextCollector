@@ -1,6 +1,6 @@
 # COCO Context Collector
 
-## It's a COntextualizer, trained on COCO! See what I did there?
+## It's a Contextualizer, trained on COCO! See what I did there?
 
 ### This mixed vision-language model gets better by making mistakes
 
