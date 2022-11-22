@@ -160,14 +160,30 @@ The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by conca
 
 ```
 hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),     # input
-                                      (hidden_state[:batch_size_t], cell_state[:batch_size_t]))     # hidden
+                                      (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )     # hidden
 ```
 
 ![lstm](https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg)
 
+The intuition behind the mechanism of the long short term memory unit is as follows:
+
+
+
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
 ## Training the model
+
+To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
+
+```
+embed_size = 300  # this is the size of the word embedding, i.e. exactly how many numbers will represent the words in the vocabulary. This is done using a look-up table through nn.Embedding 
+
+attention_dim = 300  # this is the size of the full lenght attention dimension, i.e. exactly how many pixels are worth attenting to. The pixels themselves will be learned through training, and this last linear dimension will be sotfmax-ed such as to output probabilities in the forward pass.
+
+decoder_dim = 300  # this is the dimension of the hidden size of the LSTM cell, and it will be the last input of the last fully connected layer that maps the vectorized words to their scores 
+```
+
+Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesion but keep in mind again [hardware limitations](##hardware-and-limitations)
 
 ![p10](https://user-images.githubusercontent.com/81184255/203031587-69629719-fc88-4c1b-8ce5-76dc9b89aa36.gif)
 
