@@ -127,7 +127,7 @@ alpha = softmax((W1 * h) + (W2 * s))
 
 where ```h``` is the output of the encoder, ```s``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
 
-Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
+:point_right: Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
@@ -243,7 +243,7 @@ Always looking for the next best is called a ___greedy___ search, and you can ac
 
 Again, keep in mind that, provided you have one, this search will also be transfered to your graphics card, so you may run out of memory if you try to keep count of too many posibilities. 
 
-That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
+:point_right: That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
 
 I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
 
@@ -314,9 +314,56 @@ The rest of the inference pipeline just loads the ```state_dicts``` of each mode
 
 To test the model you can run the ```run.py``` file by parsing the needed arguments.
 
+Since the inference of the model relies on teacher forcing, i.e. using the whole caption for inference regardless of the last generated sequence, for now the whole vocabulary is needed to test the model, meaning that the dataset is needed as well, so one will have to train the model before running it the way it works now. 
+
+I also cannot provide the encoder here as there are size constraints, but any pretrained resnet will work (do make sure to behead it first if you choose to try this out).
+
+The options for running the model are as follows:
+
+```
+--video  # this is an mp4 video that will be used for inference, I provide one in the video folder
+--expand  # this is the expanding ratio of the bounding box ROI after each mistake
+--backend  # this is best set to 'cuda', but be weary of memory limitations
+--k  # this is the number of nodes (captions) held for future consideration in the beam search
+--conf  # this is the confidence threshold for YOLO
+--nms  # this is the non-maximum suppression for the YOLO rendered bounding boxes
+```
+
+YOLO inference is done using the ```dnn``` module from ```OpenCV```.
+
+
 ![p14](https://user-images.githubusercontent.com/81184255/203032384-3a2cb769-bc94-45e0-9048-e6eecbe75fd6.gif)
 
 ## Hardware and Limitations
+
+My configuration is the following:
+
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 516.01       Driver Version: 516.01       CUDA Version: 11.7     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name            TCC/WDDM | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ... WDDM  | 00000000:01:00.0  On |                  N/A |
+| N/A   43C    P8     5W /  N/A |    907MiB /  6144MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
++-----------------------------------------------------------------------------+
+
+I am using:
+* a turing Geforce GTX 1660 TI with 6GB of memory
+* CUDA arch bin of 7.5
+* CUDA 11.7
+* cuDNN 8.5 (so that it works with OpenCV 4.5.2) 
+
+:point_right: Be aware that when building OpenCV there will be no erros if your pick uncompatible versions, but unless everything clicks the net will refuse to run of the GPU
 
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
