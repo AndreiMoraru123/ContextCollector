@@ -228,6 +228,21 @@ torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
 
 ## Beam Search
 
+In the ```sample``` function of the decoder, there is a parameter called ```k```. This one represents the nubmer of captions held into consideration for future exploration. 
+
+The beam search is a thing in machine translation, because you do not always want the next ___best___ word, because the word that comes after that, may not be the ___overall best___ to form a meaningful sentence. 
+
+Always looking for the next best is called a ___greedy___ search, and you can achieve that setting ```k = ```, such as to only hold one hypothesis every time. 
+
+Again, keep in mind that (provided you have one) this search will also be transfered to your graphics card, so you may run out of memory if you train to keep count of too many posibilities. 
+
+That means you may sometimes be forced to use a greedy search, or break the sentences before they finish.
+
+I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
+
+![beamsearch](https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif)
+
+
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
 ## YOLO and the Perspective Expansion
