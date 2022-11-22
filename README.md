@@ -1,6 +1,6 @@
 # COCO Context Collector
 
-## It's a COntextualizer, trained on COCO! See what I did there? :zany_face:
+## It's a COntextualizer, trained on COCO! See what I did there?
 
 ### This mixed vision-language model gets better by making mistakes
 
@@ -15,6 +15,8 @@ Trained on the supervised 2017 challenge of image-caption pairs, using a custom 
 Built using PyTorch :fire:
 
 Explained in depth further down in this ```README```.
+
+[Click here to see some more examples](#some-more-examples)
 
 ![p2](https://user-images.githubusercontent.com/81184255/203030363-57e342d2-6d74-4600-ae86-c09079f8ff22.gif)
 
@@ -65,13 +67,15 @@ word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less t
 vocab_from_file = False  # if True, load existing vocab file. If False, create vocab file from scratch
 ```
 
-and, because the inference depends on the built vocabulary, the ```word_treshold``` can be set only while ```training``` mode, and the ```vocab_from_file``` trigger can only be set to ```True``` while in ```testing``` mode.
+and, because the inference depends on the built vocabulary, the ```word_treshold``` can be set only while in ```training``` mode, and the ```vocab_from_file``` trigger can only be set to ```True``` while in ```testing``` mode.
 
 Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can then be later loaded for inference.
 
 ![p5](https://user-images.githubusercontent.com/81184255/203030454-9c023413-e532-444f-9b97-ae4ee14034f1.gif)
 
 ## Model description
+
+As found in the [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
 ### 1. [The CNN Encoder](#encoder)
 ### 2. [The Attention Network](#attention)
@@ -83,9 +87,9 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
 
-As ResNet was originally designed as a classifier, the last layer is going to be the activation function ```Softmax```. 
+Since ResNet was originally designed as a classifier, the last layer is going to be the activation function ```Softmax```. 
 
-However, since PyTorch deals with it using implicitly using ```CrossEntropyLoss```, the only layers that need to be beheaded are the last linear fully connected layer and the average pool layer, which will be replaced by the custom average pool layer, for which we you and I can choose the pooling size. 
+However, since PyTorch deals with probabilities implicitly using ```CrossEntropyLoss```, the classifier will not be present, and the only layers that need to be beheaded are the last linear fully connected layer and the average pooling layer, which will be replaced by the custom average pooling layer, for which you and I can choose the pooling size. 
 
 The ```freeze_grad``` function is there if you need to tailor how many (if any) of the encoder layers do you want to train (optional, since the Net is pretrained).
 
@@ -97,9 +101,31 @@ Any ResNet architecture (any depth) will work here, as well as some of the other
 
 # Attention
 
+## Why?
+
 "One important property of human perception is that one does not tend to process a whole scene
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
 acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
+
+The great gain of using attention as a mechanism in the decoder is that the importantce of the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space). Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the features by the model. The results are actually quite astounding when compared to an attention-less network (see previous project). 
+
+## Where?
+
+Since the encoder is already trained and can output a competent feature map (we know that ResNet can classify images), the mechanism of attention is used to augument the behaviour of the RNN decoder. During the training phase, the decoder learns which parts of the latent space make up the "context" of an image. The selling point of this approach is based on the fact that the learning is not done in a simple, sequential manner, but some non-linear interpolations can occur in such a way that you could make a strong point for convincing someone that the model has actually "understood" the task.
+
+## What kind?
+
+The original paper, as well as this implementation use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
+
+The formula for the Bahdanau Attention is the essentially the following:
+
+```
+alpha = softmax((W1 * h) + (W2 * s))
+```
+
+where ```h``` is the output of the encoder, ```s``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
+
+Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
@@ -113,20 +139,197 @@ I am using pretty much the same decoder proposed in the greatly elaborated [Imag
 
 The aformentioned implementation is self sufficient, but I will further explain how the decoder works for the purpose of this particular project, as well as the statements above.
 
+The main idea of the model workflow is that the Encoder is passing a "context" feature to the decoder, which in turn produces an output. Since the decoder is an RNN, so the outputs will be given in sequences. The recurrent network can take into account the inputed features as well as its own hidden state.
+
+The attention weighted encoding is gated through a sigmoid activation and the resulting values are added to the embedding of the previous word. This concatenation is then passed as the input to an ```LSTMCell```, along with the previous hidden state.
+
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
+
+
+## The LSTM Cell
+
+The embedded image captions are concatenated with gated attention encodings and passed as the input of the LSTMCell. If this were an attentionless mechanism, you would just pass the encoded features added to the embeddings. 
+
+Concatenation in code will look like this:
+
+```
+self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
+```
+
+The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states.
+
+
+```
+hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),  # input
+                                      (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )  # hidden
+```
+
+The cell outputs a tuple made of the next hidden and cell states like in the picture below. 
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg" width = "500"/>
+</p>
+
+The intuition behind the mechanism of the long short term memory unit is as follows:
+
+
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
+## Training the model
+
+To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
+
+```
+embed_size = 300  # this is the size of the words embedding, 
+                  # i.e. exactly how many numbers will represent the words in the vocabulary.
+                  # This is done using a look-up table through nn.Embedding 
+
+attention_dim = 300  # this is the size of the full length attention dimension,
+                     # i.e. exactly how many pixels are worth attenting to. 
+                     # The pixels themselves will be learned through training
+                     # and this last linear dimension will be sotfmax-ed 
+                     # such as to output probabilities in the forward pass.
+
+decoder_dim = 300  # this is the dimension of the hidden size of the LSTM cell
+                   # and it will be the last input of the last fully connected layer
+                   # that maps the vectorized words to their scores 
+```
+
+Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesions, but keep in mind again hardware limitations, as these are held in memory.
+
+The rest of the parsed arguments are:
+
+```
+dropout = 0.5  # the only drop out is at the last fully connected layer in the decoder,
+               # the one that outputs the predictions based on the resulted hidden state of the LSTM cell
+               
+num_epochs = 5  # keep in mind that training an epoch may take several hours on most machines
+
+batch_size = 22  # this one is as well depended on how many images can your GPU hold at once
+                 # I cannot go much higher, so the training will take longer
+
+word_threshold = 6  #  the minimum number of apparitions for a word to be included in the vocabulary
+
+vocab_from_file = False  # if this is the first time of training / you do not have the pickle file,
+                         # then you will have to generate the vocabulary first
+                       
+# save_every = 1  # save every chosen epoch
+
+# print_every = 100  # log stats every chosen number of batches
+```
+
+The `loss` function is ```CrossEntropyLoss``` and should not be changed as this is the only one that makes sense. Captioning is just multi-label classifcation. 
+
+The ```train_transform``` the images go through before being passed to the encoder is pretty standard, using the ImagNet ```mean``` and ```std``` values. 
+
+Since the input sizes here do not vary it may make sense to set:
+
+```
+torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
+```
+
 ![p10](https://user-images.githubusercontent.com/81184255/203031587-69629719-fc88-4c1b-8ce5-76dc9b89aa36.gif)
+
+## Beam Search
+
+In the ```sample``` function of the decoder, there is an input parameter called ```k```. This one represents the number of captions held into consideration for future exploration. 
+
+The beam search is a thing in machine translation, because you do not always want the next ___best___ word, as the word that comes after that may not be the ___overall best___ to form a meaningful sentence. 
+
+Always looking for the next best is called a ___greedy___ search, and you can achieve that by setting ```k = 1```, such as to only hold one hypothesis every time. 
+
+Again, keep in mind that, provided you have one, this search will also be transfered to your graphics card, so you may run out of memory if you try to keep count of too many posibilities. 
+
+That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
+
+I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
+</p>
 
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
+## YOLO and the Perspective Expansion
+
+Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, and will perform as such on the testing set. 
+
+But "real life" videos are different, each frame is related to the previous one and not all of them have much going on.
+
+* For this reason, I use [YOLOv4](https://arxiv.org/abs/2004.10934) to get an initial object of interest in the frame. 
+* A caption is then generated for the region of interest (ROI) bounded by the YOLO generated box
+* If the prediction is far off the truth (no word in the sentence matches the label output by the detector), the algo expands the ROI by a given factor until it does or until a certain number of tries have been made, to avoid infinite loops
+* Using the newly expanded ROI, the model is able to get more context out of the frame
+* As you can see in the examples, the expansion factor usually finds its comfortable space before reaching a full sized image
+* That means there are significant gains in inference speeds and better predictions
+* Inspired by [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands, but not when being correct.
+* Instead, it grows by making obvious mistakes, and in fact relies on it to give its best performance in terms of context understanding.
+
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
+
+## Inference Pipeline
+
+I provided some model ```pruning``` functions in the ```pipeline.py``` file, both structured and unstructured (global and local), but I use neither and do not recommend them as they are now. You could achieve faster inference by cutting out neurons or connections, but you will also hinder the performance.
+
+I highly avoid structured pruning (both L1 and L2), as it will just wipe out most of the learned vocabulary, at no speed gains.
+
+Example:
+
+```
+a man <unk> <unk> <unk> a <unk> <unk> <unk> <unk> .
+a man <unk> <unk> <unk> a <unk> <unk> <unk> .
+a <unk> <unk> <unk> <unk> <unk> <unk> <unk> <unk> <unk> .
+a <unk> <unk> <unk> <unk> <unk> <unk> <unk> .
+```
+
+While unstructured (both local and global) pruning is safer:
+
+```
+a man on a motorcycle in the grass .
+a motorcycle parked on the side of the road .
+a man on a skateboard in a park .
+a person on a motorcycle in the woods .
+```
+
+But no more performant in terms of speed
+
+Local pruning works layer by layer across every layer, while global pruning wipes across all layers indiscriminately. But for the purpose of this model, they both produce no gain.
+
+Unstructured pruning is by default L1, because the wieghts are sorted one after the other.
+
+the ```JIT``` compiler can be used to increase the performance using the ```optimized_execution```. However, this does not always result in a smaller model, and it could in fact make the network increase in size. 
+
+Neither ```torch.jit``` nor ```onnx``` converters can be used on the decoder, because it is very customized, and these operations for now require strong tensor typing, and are not very permissive to custom architectures, so I resorted to only tracing the ResNet encoder (which also cannot be inferenced using ```onnxruntime```, because of the custom average pooling layer). 
+
+As you can start to see, there are not really any out of the box solutions for these types of things yet.
+
+The rest of the inference pipeline just loads the ```state_dicts``` of each model and runs the data stream through them using a pretty standard ```test_transform``` and dealing with the expansion of the ROI.
 
 ![p13](https://user-images.githubusercontent.com/81184255/203032125-af4328cd-4ff2-4eb2-a66d-61807fbbb925.gif)
 
+## Running the model
+
 ![p14](https://user-images.githubusercontent.com/81184255/203032384-3a2cb769-bc94-45e0-9048-e6eecbe75fd6.gif)
+
+## Hardware and Limitations
 
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
+## Optimization
+
 ![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
+
+# Some more examples
+
+Notice how in the motorcycle example the ROI expands until it can notice there is not only one, but a group of people riding motorcycles, something object detection itself is incapable of accomplishing. 
+
+Shift                    |           In             |         Perspective
+:-------------------------:|:-------------------------:|:-------------------------:
+![p1m](https://user-images.githubusercontent.com/81184255/203171977-04178a2a-0b08-4114-af66-eb65662cf578.gif) | ![p2m](https://user-images.githubusercontent.com/81184255/203172037-2e26db28-9745-4f12-88f1-b6a1b8143356.gif) | ![p3m](https://user-images.githubusercontent.com/81184255/203172063-cadc682a-529d-413d-a7d5-343bbd66af71.gif)
+
+![p1](https://user-images.githubusercontent.com/81184255/203173602-62e9234d-5043-47fd-8bcb-6942017a0de2.gif)
+
+Broaden                    |           The             |         View
+:-------------------------:|:-------------------------:|:-------------------------:
+![p1](https://user-images.githubusercontent.com/81184255/203182932-454712e1-a2ce-4bc4-91b6-3a5103944160.gif) | ![p2](https://user-images.githubusercontent.com/81184255/203182945-4e37635b-88e5-4f3e-acea-b9dec795d2a9.gif) | ![p3](https://user-images.githubusercontent.com/81184255/203182986-836c4610-d8a0-4043-abbf-c7eee78fb5ed.gif)
