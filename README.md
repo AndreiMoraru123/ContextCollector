@@ -270,6 +270,30 @@ But "real life" videos are different, each frame is related to the previous one 
 
 ## Inference Pipeline
 
+I provided some model ```pruning``` functions in the ```pipeline.py``` file, both structured and unstructured (global and local), but I use neither and do not recommend them as they are now. You could achieve faster inference by cutting out neurons or connections, but you will also hinder the performance.
+
+I highly avoid structured pruning, as it will just wipe out most of the learned vocabulary, at no speed gains.
+
+Example:
+
+```
+a man <unk> <unk> <unk> a <unk> <unk> <unk> <unk> .
+a man <unk> <unk> <unk> a <unk> <unk> <unk> .
+a <unk> <unk> <unk> <unk> <unk> <unk> <unk> <unk> <unk> .
+a <unk> <unk> <unk> <unk> <unk> <unk> <unk> .
+```
+
+While unstructed pruning is safer:
+
+```
+a man on a motorcycle in the grass .
+a motorcycle parked on the side of the road .
+a man on a skateboard in a park .
+a person on a motorcycle in the woods .
+```
+
+But no more performant in terms of speed
+
 ![p13](https://user-images.githubusercontent.com/81184255/203032125-af4328cd-4ff2-4eb2-a66d-61807fbbb925.gif)
 
 ## Running the model
