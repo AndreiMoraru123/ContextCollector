@@ -338,29 +338,9 @@ YOLO inference is done using the ```dnn``` module from ```OpenCV```.
 
 My configuration is the following:
 
----
-
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 516.01       Driver Version: 516.01       CUDA Version: 11.7     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name            TCC/WDDM | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-|   0  NVIDIA GeForce ... WDDM  | 00000000:01:00.0  On |                  N/A |
-| N/A   43C    P8     5W /  N/A |    907MiB /  6144MiB |      0%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-+-----------------------------------------------------------------------------+
-
-
----
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203286519-82ed38a6-d63a-424b-bc91-bf906412bf68.png" width = "500"/>
+</p>
 
 I am using:
 * a turing Geforce GTX 1660 TI with 6GB of memory
