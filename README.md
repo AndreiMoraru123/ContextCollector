@@ -234,11 +234,11 @@ In the ```sample``` function of the decoder, there is a parameter called ```k```
 
 The beam search is a thing in machine translation, because you do not always want the next ___best___ word, because the word that comes after that, may not be the ___overall best___ to form a meaningful sentence. 
 
-Always looking for the next best is called a ___greedy___ search, and you can achieve that setting ```k = ```, such as to only hold one hypothesis every time. 
+Always looking for the next best is called a ___greedy___ search, and you can achieve that setting ```k = 1```, such as to only hold one hypothesis every time. 
 
 Again, keep in mind that (provided you have one) this search will also be transfered to your graphics card, so you may run out of memory if you train to keep count of too many posibilities. 
 
-That means you may sometimes be forced to use a greedy search, or break the sentences before they finish.
+That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
 
 I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
 
@@ -246,10 +246,21 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
   <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
 </p>
 
-
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
 ## YOLO and the Perspective Expansion
+
+Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, and will perform as such on the testing set. 
+
+But videos are different, each frame is related to the previous one and not all of them have much going on.
+
+* For this reason, I use [YOLOv4](https://arxiv.org/abs/2004.10934) to get an initial object of interest in the frame. 
+* A caption is then generated for the region of interest (ROI) bounded by the YOLO generated box
+* If the prediction is far off the truth (no word in the sentence matches the label output by the detector), I expand the ROI by a given factor until it does or until a certain number of tries have been made, to avoid infinited loops
+* With a new expanded ROI, the model is able to get more context out of the frame
+* As you can see in the examples, the expansion factor usually finds its comfortable size before reaching a full size image
+* That means there are significant gains in inference speeds
+* Inspired by [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands not when being correct, but when making obvious mistakes, and in fact relies on it to give its best performance in terms of context understanding.
 
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
 
@@ -270,6 +281,8 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
 ![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
 
 # Some more examples
+
+Notice how in the motorcycle example the ROI expands until it can notice there is not only one, but a group of people riding motorcycles, something object detection itself is incapable of accomplishing. 
 
 Shift                    |           In             |         Perspective
 :-------------------------:|:-------------------------:|:-------------------------:
