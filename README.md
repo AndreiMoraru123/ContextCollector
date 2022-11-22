@@ -191,8 +191,8 @@ In the picture up above as well as in this model, ```h``` represents the ___shor
 To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
 
 ```
-embed_size = 300  # this is the size of the words embedding, 
-                  # i.e. exactly how many numbers will represent the words in the vocabulary.
+embed_size = 300  # this is the size of the embedding of a word, 
+                  # i.e. exactly how many numbers will represent each word in the vocabulary.
                   # This is done using a look-up table through nn.Embedding 
 
 attention_dim = 300  # this is the size of the full length attention dimension,
