@@ -67,7 +67,7 @@ word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less t
 vocab_from_file = False  # if True, load existing vocab file. If False, create vocab file from scratch
 ```
 
-and, because the inference depends on the built vocabulary, the ```word_treshold``` can be set only while ```training``` mode, and the ```vocab_from_file``` trigger can only be set to ```True``` while in ```testing``` mode.
+and, because the inference depends on the built vocabulary, the ```word_treshold``` can be set only while in ```training``` mode, and the ```vocab_from_file``` trigger can only be set to ```True``` while in ```testing``` mode.
 
 Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can then be later loaded for inference.
 
@@ -87,9 +87,9 @@ As found in the [model.py](https://github.com/AndreiMoraru123/ContextCollector/b
 
 The encoder is a beheaded pretrained ResNet-152 model that outputs a feature vector of size 2048 x W x H  for each image, where W and H are both the ```encoded_image_size``` used in the last average pooling. The original paper proposed an encoded size of 14. 
 
-As ResNet was originally designed as a classifier, the last layer is going to be the activation function ```Softmax```. 
+Since ResNet was originally designed as a classifier, the last layer is going to be the activation function ```Softmax```. 
 
-However, since PyTorch deals with it using implicitly using ```CrossEntropyLoss```, the only layers that need to be beheaded are the last linear fully connected layer and the average pool layer, which will be replaced by the custom average pool layer, for which we you and I can choose the pooling size. 
+However, since PyTorch deals with probabilities implicitly using ```CrossEntropyLoss```, the classifier will not be present, and the only layers that need to be beheaded are the last linear fully connected layer and the average pooling layer, which will be replaced by the custom average pooling layer, for which you and I can choose the pooling size. 
 
 The ```freeze_grad``` function is there if you need to tailor how many (if any) of the encoder layers do you want to train (optional, since the Net is pretrained).
 
@@ -107,7 +107,7 @@ Any ResNet architecture (any depth) will work here, as well as some of the other
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
 acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
 
-The great gain of using attention as a mechanism in the decoder is that the importantce the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space. Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the decoder. The results are reallly actually astounding when compared to an attention-less network (see previous project). 
+The great gain of using attention as a mechanism in the decoder is that the importantce of the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space). Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the features by the model. The results are actually quite astounding when compared to an attention-less network (see previous project). 
 
 ## Where?
 
@@ -123,7 +123,7 @@ The formula for the Bahdanau Attention is the essentially the following:
 alpha = softmax((W1 * h) + (W2 * s))
 ```
 
-where h is the output of the encoder, s is the hidden previous state of the decoder, and W1 and W2 are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
+where ```h``` is the output of the encoder, ```s``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
 
 Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
 
@@ -139,7 +139,7 @@ I am using pretty much the same decoder proposed in the greatly elaborated [Imag
 
 The aformentioned implementation is self sufficient, but I will further explain how the decoder works for the purpose of this particular project, as well as the statements above.
 
-The main idea of the model workflow is that the Encoder is passing a "context" feature to the decoder, which in turn produces an output. Since the decoder is an RNN, so the outputs will be given in sequences. The recurrent network can take into account the inputed features as well as it's own hidden state.
+The main idea of the model workflow is that the Encoder is passing a "context" feature to the decoder, which in turn produces an output. Since the decoder is an RNN, so the outputs will be given in sequences. The recurrent network can take into account the inputed features as well as its own hidden state.
 
 The attention weighted encoding is gated through a sigmoid activation and the resulting values are added to the embedding of the previous word. This concatenation is then passed as the input to an ```LSTMCell```, along with the previous hidden state.
 
@@ -156,12 +156,15 @@ Concatenation in code will look like this:
 self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
 ```
 
-The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states and it outputs a tuple of the next hidden and cell states like in the picture below. 
+The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states.
+
 
 ```
 hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),  # input
                                       (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )  # hidden
 ```
+
+The cell outputs a tuple made of the next hidden and cell states like in the picture below. 
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg" width = "500"/>
@@ -178,11 +181,11 @@ The intuition behind the mechanism of the long short term memory unit is as foll
 To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
 
 ```
-embed_size = 300  # this is the size of the word embedding, 
+embed_size = 300  # this is the size of the words embedding, 
                   # i.e. exactly how many numbers will represent the words in the vocabulary.
                   # This is done using a look-up table through nn.Embedding 
 
-attention_dim = 300  # this is the size of the full lenght attention dimension,
+attention_dim = 300  # this is the size of the full length attention dimension,
                      # i.e. exactly how many pixels are worth attenting to. 
                      # The pixels themselves will be learned through training
                      # and this last linear dimension will be sotfmax-ed 
@@ -193,7 +196,7 @@ decoder_dim = 300  # this is the dimension of the hidden size of the LSTM cell
                    # that maps the vectorized words to their scores 
 ```
 
-Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesion but keep in mind again hardware limitations, as these are held in the memory.
+Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesions, but keep in mind again hardware limitations, as these are held in memory.
 
 The rest of the parsed arguments are:
 
@@ -201,7 +204,7 @@ The rest of the parsed arguments are:
 dropout = 0.5  # the only drop out is at the last fully connected layer in the decoder,
                # the one that outputs the predictions based on the resulted hidden state of the LSTM cell
                
-num_epochs = 5  # keep in mind that training an epoch will take several hours, more on this down below
+num_epochs = 5  # keep in mind that training an epoch may take several hours on most machines
 
 batch_size = 22  # this one is as well depended on how many images can your GPU hold at once
                  # I cannot go much higher, so the training will take longer
@@ -216,7 +219,7 @@ vocab_from_file = False  # if this is the first time of training / you do not ha
 # print_every = 100  # log stats every chosen number of batches
 ```
 
-The `loss` function is ```CrossEntropyLoss``` and should not be changed as this is the only one that makes sense. Captioning is just multi-label classifciation. 
+The `loss` function is ```CrossEntropyLoss``` and should not be changed as this is the only one that makes sense. Captioning is just multi-label classifcation. 
 
 The ```train_transform``` the images go through before being passed to the encoder is pretty standard, using the ImagNet ```mean``` and ```std``` values. 
 
@@ -230,13 +233,13 @@ torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
 
 ## Beam Search
 
-In the ```sample``` function of the decoder, there is a parameter called ```k```. This one represents the number of captions held into consideration for future exploration. 
+In the ```sample``` function of the decoder, there is an input parameter called ```k```. This one represents the number of captions held into consideration for future exploration. 
 
-The beam search is a thing in machine translation, because you do not always want the next ___best___ word, because the word that comes after that, may not be the ___overall best___ to form a meaningful sentence. 
+The beam search is a thing in machine translation, because you do not always want the next ___best___ word, as the word that comes after that may not be the ___overall best___ to form a meaningful sentence. 
 
-Always looking for the next best is called a ___greedy___ search, and you can achieve that setting ```k = 1```, such as to only hold one hypothesis every time. 
+Always looking for the next best is called a ___greedy___ search, and you can achieve that by setting ```k = 1```, such as to only hold one hypothesis every time. 
 
-Again, keep in mind that (provided you have one) this search will also be transfered to your graphics card, so you may run out of memory if you train to keep count of too many posibilities. 
+Again, keep in mind that, provided you have one, this search will also be transfered to your graphics card, so you may run out of memory if you try to keep count of too many posibilities. 
 
 That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
 
@@ -252,15 +255,16 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
 
 Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, and will perform as such on the testing set. 
 
-But videos are different, each frame is related to the previous one and not all of them have much going on.
+But "real life" videos are different, each frame is related to the previous one and not all of them have much going on.
 
 * For this reason, I use [YOLOv4](https://arxiv.org/abs/2004.10934) to get an initial object of interest in the frame. 
 * A caption is then generated for the region of interest (ROI) bounded by the YOLO generated box
-* If the prediction is far off the truth (no word in the sentence matches the label output by the detector), I expand the ROI by a given factor until it does or until a certain number of tries have been made, to avoid infinited loops
-* With a new expanded ROI, the model is able to get more context out of the frame
-* As you can see in the examples, the expansion factor usually finds its comfortable size before reaching a full size image
-* That means there are significant gains in inference speeds
-* Inspired by [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands not when being correct, but when making obvious mistakes, and in fact relies on it to give its best performance in terms of context understanding.
+* If the prediction is far off the truth (no word in the sentence matches the label output by the detector), the algo expands the ROI by a given factor until it does or until a certain number of tries have been made, to avoid infinite loops
+* Using the newly expanded ROI, the model is able to get more context out of the frame
+* As you can see in the examples, the expansion factor usually finds its comfortable space before reaching a full sized image
+* That means there are significant gains in inference speeds and better predictions
+* Inspired by [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands, but not when being correct.
+* Instead, it grows by making obvious mistakes, and in fact relies on it to give its best performance in terms of context understanding.
 
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
 
