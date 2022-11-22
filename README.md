@@ -265,7 +265,7 @@ But "real life" videos are different, each frame is related to the previous one 
 * Using the newly expanded ROI, the model is able to get more context out of the frame
 * As you can see in the examples, the expansion factor usually finds its comfortable space before reaching a full sized image
 * That means there are significant gains in inference speeds and better predictions
-* Inspired by [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands, but not when being correct.
+* Much like in [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands, but not when being correct.
 * Instead, it grows by making obvious mistakes, and in fact relies on it to give its best performance in terms of context understanding.
 
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
