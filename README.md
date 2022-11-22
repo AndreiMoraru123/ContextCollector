@@ -169,12 +169,17 @@ hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :]
 The cell outputs a tuple made of the next hidden and cell states like in the picture below. 
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg" width = "500"/>
+  <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg)" width = "500"/>
 </p>
 
-The intuition behind the mechanism of the long short term memory unit is as follows:
 
+The intuition and computation behind the mechanism of the long short term memory unit are as follows:
 
+The cell operates with a ___long term memory___ and a ___short term___ one. As their names intuitively convey, the former is concerned with a more general sense of state, while the latter is concentrated around what it has just seen. 
+
+The long term memory is represented here as the __cell state__, ```c```
+
+The short term memory, or the ___hidden state___ will be joined by the ___input event___ which represents what the cell has just seen/experienced.
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
