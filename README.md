@@ -191,7 +191,38 @@ decoder_dim = 300  # this is the dimension of the hidden size of the LSTM cell
                    # that maps the vectorized words to their scores 
 ```
 
-Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesion but keep in mind again [hardware limitations](##hardware-and-limitations)
+Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesion but keep in mind again hardware limitations, as these are held in the memory.
+
+The rest of the parsed arguments are:
+
+```
+dropout = 0.5  # the only drop out is at the last fully connected layer in the decoder,
+               # the one that outputs the predictions based on the resulted hidden state of the LSTM cell
+               
+num_epochs = 5  # keep in mind that training an epoch will take several hours, more on this down below
+
+batch_size = 22  # this one is as well depended on how many images can your GPU hold at once
+                 # I cannot go much higher, so the training will take longer
+
+word_threshold = 6  #  the minimum number of apparitions for a word to be included in the vocabulary
+
+vocab_from_file = False  # if this is the first time of training / you do not have the pickle file,
+                         # then you will have to generate the vocabulary first
+                       
+# save_every = 1  # save every chosen epoch
+
+# print_every = 100  # log stats every chosen number of batches
+```
+
+The `loss` function is ```CrossEntropyLoss``` and should not be changed as this is the only one that makes sense. Captioning is just multi-label classifciation. 
+
+The ```train_transform``` the images go through before being passed to the encoder is pretty standard, using the ImagNet ```mean``` and ```std``` values. 
+
+Since the input sizes here do not vary it may make sense to set:
+
+```
+torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
+```
 
 ![p10](https://user-images.githubusercontent.com/81184255/203031587-69629719-fc88-4c1b-8ce5-76dc9b89aa36.gif)
 
