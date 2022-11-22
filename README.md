@@ -150,7 +150,18 @@ The attention weighted encoding is gated through a sigmoid activation and the re
 
 The embedded image captions are concatenated with gated attention encodings and passed as the input of the LSTMCell. If this were an attentionless mechanism, you would just pass the encoded features added to the embeddings. 
 
+Concatenation in code will look like this:
+
+```
+self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
+```
+
 The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states and it outputs a tuple of the next hidden and cell states like in the picture below. 
+
+```
+hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),     # input
+                                      (hidden_state[:batch_size_t], cell_state[:batch_size_t]))     # hidden
+```
 
 ![lstm](https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg)
 
