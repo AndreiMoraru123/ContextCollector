@@ -230,7 +230,7 @@ torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
 
 ## Beam Search
 
-In the ```sample``` function of the decoder, there is a parameter called ```k```. This one represents the nubmer of captions held into consideration for future exploration. 
+In the ```sample``` function of the decoder, there is a parameter called ```k```. This one represents the number of captions held into consideration for future exploration. 
 
 The beam search is a thing in machine translation, because you do not always want the next ___best___ word, because the word that comes after that, may not be the ___overall best___ to form a meaningful sentence. 
 
