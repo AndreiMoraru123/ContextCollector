@@ -159,8 +159,8 @@ self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_
 The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states and it outputs a tuple of the next hidden and cell states like in the picture below. 
 
 ```
-hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),     # input
-                                      (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )     # hidden
+hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),  # input
+                                      (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )  # hidden
 ```
 
 <p align="center">
@@ -242,7 +242,9 @@ That means you may sometimes be forced to use a greedy search, or break the sent
 
 I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
 
-![beamsearch](https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
+</p>
 
 
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
