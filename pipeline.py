@@ -62,6 +62,14 @@ def prune_model_l1_structured(model, layer_type, proportion):
     return model
 
 
+def prune_model_l2_structured(model, layer_type, proportion):
+    for module in model.modules():
+        if isinstance(module, layer_type):
+            prune.ln_structured(module, 'weight', proportion, n=2, dim=1)
+            prune.remove(module, 'weight')
+    return model
+
+
 def prune_model_global_unstructured(model, layer_type, proportion):
     module_tups = []
     for module in model.modules():
