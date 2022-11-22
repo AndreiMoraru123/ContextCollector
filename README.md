@@ -338,6 +338,8 @@ YOLO inference is done using the ```dnn``` module from ```OpenCV```.
 
 My configuration is the following:
 
+---
+
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 516.01       Driver Version: 516.01       CUDA Version: 11.7     |
 |-------------------------------+----------------------+----------------------+
@@ -356,6 +358,9 @@ My configuration is the following:
 |        ID   ID                                                   Usage      |
 |=============================================================================|
 +-----------------------------------------------------------------------------+
+
+
+---
 
 I am using:
 * a turing Geforce GTX 1660 TI with 6GB of memory
