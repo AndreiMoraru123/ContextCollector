@@ -364,6 +364,8 @@ I am also currently looking into deployment tools using ONNX.
 
 These are both not provided off the bat for artificial intelligence models, so there is really no go-to solution. I will keep updating the repository as I make progress.
 
+I am also playing around with the [Intel Neural Compute Stick](https://www.intel.com/content/www/us/en/developer/tools/neural-compute-stick/overview.html) and the OpenVINO api to split the inference of the different networks away from running out of CUDA memory.
+
 ![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
 
 # Some more examples
