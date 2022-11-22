@@ -169,7 +169,7 @@ hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :]
 The cell outputs a tuple made of the next hidden and cell states like in the picture below. 
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg)" width = "500"/>
+  <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg" width = "500"/>
 </p>
 
 
