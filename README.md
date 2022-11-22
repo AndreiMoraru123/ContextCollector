@@ -163,7 +163,7 @@ hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :]
                                       (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )     # hidden
 ```
 
-![lstm](https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg)
+<img align="center" width = "500" src="https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg" />
 
 The intuition behind the mechanism of the long short term memory unit is as follows:
 
