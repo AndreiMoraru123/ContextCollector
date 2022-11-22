@@ -350,6 +350,8 @@ I am using:
 
 :point_right: Be aware that when building OpenCV there will be no erros if your pick uncompatible versions, but unless everything clicks the net will refuse to run of the GPU
 
+Using the computation ```FPS = 1 / inference_time```, the model is able to average 4 frames per second.
+
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
 ## Future outlook and goals
