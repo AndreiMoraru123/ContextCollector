@@ -176,11 +176,19 @@ The intuition behind the mechanism of the long short term memory unit is as foll
 To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
 
 ```
-embed_size = 300  # this is the size of the word embedding, i.e. exactly how many numbers will represent the words in the vocabulary. This is done using a look-up table through nn.Embedding 
+embed_size = 300  # this is the size of the word embedding, 
+                  # i.e. exactly how many numbers will represent the words in the vocabulary.
+                  # This is done using a look-up table through nn.Embedding 
 
-attention_dim = 300  # this is the size of the full lenght attention dimension, i.e. exactly how many pixels are worth attenting to. The pixels themselves will be learned through training, and this last linear dimension will be sotfmax-ed such as to output probabilities in the forward pass.
+attention_dim = 300  # this is the size of the full lenght attention dimension,
+                     # i.e. exactly how many pixels are worth attenting to. 
+                     # The pixels themselves will be learned through training
+                     # and this last linear dimension will be sotfmax-ed 
+                     # such as to output probabilities in the forward pass.
 
-decoder_dim = 300  # this is the dimension of the hidden size of the LSTM cell, and it will be the last input of the last fully connected layer that maps the vectorized words to their scores 
+decoder_dim = 300  # this is the dimension of the hidden size of the LSTM cell
+                   # and it will be the last input of the last fully connected layer
+                   # that maps the vectorized words to their scores 
 ```
 
 Now, there is no reason to keep all three at the same size, but you can intuitively see that it makes sense to keep them around the same range. You can try larger dimnesion but keep in mind again [hardware limitations](##hardware-and-limitations)
