@@ -352,7 +352,17 @@ I am using:
 
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
-## Future prospects and Goals
+## Future outlook and goals
+
+What I am really looking into right now is optimization. 
+
+The current model is working, but in a hindered state. With greater embeddings and a richer vocabulary the outputs can potentially be better. Training in larger batches will also finish faster. 
+
+For this reason, I am now currently working on Weight Quantization and Knowledge Distillation.
+
+I am also currently looking into deployment tools using ONNX. 
+
+These are both not provided off the bat for artificial intelligence models, so there is really no go-to solution. I will keep updating the repository as I make progress.
 
 ![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
 
