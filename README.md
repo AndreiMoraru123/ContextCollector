@@ -310,6 +310,8 @@ The rest of the inference pipeline just loads the ```state_dicts``` of each mode
 
 ## Running the model
 
+To test the model you can run the ```run.py``` file by parsing the needed arguments.
+
 ![p14](https://user-images.githubusercontent.com/81184255/203032384-3a2cb769-bc94-45e0-9048-e6eecbe75fd6.gif)
 
 ## Hardware and Limitations
