@@ -148,6 +148,10 @@ The attention weighted encoding is gated through a sigmoid activation and the re
 
 ## The LSTM Cell
 
+The embedded image captions are concatenated with gated attention encodings and passed as the input of the LSTMCell. If this were an attentionless mechanism, you would just pass the encoded features added to the embeddings. 
+
+The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states and it outputs a tuple of the next hidden and cell states like in the picture below. 
+
 ![lstm](https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg)
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
