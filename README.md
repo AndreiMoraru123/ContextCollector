@@ -166,7 +166,7 @@ hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :]
                                       (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )  # hidden
 ```
 
-The cell outputs a tuple made of the next hidden and cell states like in the picture below. 
+The cell outputs a tuple made out of the next hidden and cell states like in the picture below. 
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg" width = "500"/>
@@ -177,9 +177,12 @@ The intuition and computation behind the mechanism of the long short term memory
 
 The cell operates with a ___long term memory___ and a ___short term___ one. As their names intuitively convey, the former is concerned with a more general sense of state, while the latter is concentrated around what it has just seen. 
 
-The long term memory is represented here as the __cell state__, ```c```
+In the picture down below as well as in this model, ```h``` represents the ____short term memory___, or the  ____hidden state____, while ```c``` represents the ____long term memory___, or the ___cell state___.
 
-The short term memory, or the ___hidden state___ will be joined by the ___input event___ which represents what the cell has just seen/experienced.
+1. The long term memory is initially passed through a ___forget gate___.The forget factor of this gate is computed using a ```sigmoid```, which ideally behaves like a binary selector (something either gets forgotten [0] or not [1]. In practice, most values will not be saturated so the information will be _somewhat_ forgotten (0,1). The current ___hidden state___ or ___short term memory___ is passed through the sigmoid to achieve this forget factor, which is then multiplied with the ____long term memory___ or ___cell state___.
+2. The short term memory will be joined by the ___input event___ (which represents what the cell has just seen/experienced) in the ___input gate___, also called the ___learn gate___. This computation is done by gating both the input and the hidden state through an ___ignore gate___. The ignore factor of the gate is represented by a ```sigmoid``` to again ideally classify what has to be ignored [1] and what not [0]. How much is to be ignored is then decided by a ```tanh``` activation.
+3. The ___long term memory___ joined by the newly aquired information in the ___input gate___ is passed into the ___remember gate___ and it becomes the new ___cell state___ and the new ___long term memory___ of the LSTM. The operation a a point-by-point addition of the two.
+4. The ___output gate___ takes in all of the information from the input, hidden and cell state and becomes the new ___hidden state___ and ____short term memory___ of the network. The ___long term memory___ is passed through a ```tanh``` while the ___short term memory___ is passed through a ```sigmoid```, before being multiplied point-by-point in the final computation.
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
