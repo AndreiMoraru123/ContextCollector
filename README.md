@@ -355,7 +355,7 @@ Using the computation ```FPS = 1 / inference_time```, the model is able to avera
 
 ## Future outlook and goals
 
-What I am really looking into right now is optimization. 
+What I am currently looking into is optimization. 
 
 The current model is working, but in a hindered state. With greater embeddings and a richer vocabulary the outputs can potentially be better. Training in larger batches will also finish faster. 
 
