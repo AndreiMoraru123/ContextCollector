@@ -173,7 +173,7 @@ The cell outputs a tuple made out of the next hidden and cell states like in the
 </p>
 
 
-The intuition and computation behind the mechanism of the long short term memory unit are as follows:
+The intuition and computation behind the mechanism of the long short term memory unit are as follow:
 
 The cell operates with a ___long term memory___ and a ___short term___ one. As their names intuitively convey, the former is concerned with a more general sense of state, while the latter is concentrated around what it has just seen. 
 
@@ -326,7 +326,7 @@ Since the inference of the model relies on teacher forcing, i.e. using the whole
 
 I also cannot provide the encoder here as there are size constraints, but any pretrained resnet will work (do make sure to behead it first if you choose to try this out).
 
-The options for running the model are as follows:
+The options for running the model are as follow:
 
 ```
 --video  # this is an mp4 video that will be used for inference, I provide one in the video folder
