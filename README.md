@@ -306,7 +306,7 @@ But no more performant in terms of speed
 
 Local pruning works layer by layer across every layer, while global pruning wipes across all layers indiscriminately. But for the purpose of this model, they both produce no gain.
 
-Unstructured pruning is by default L1, because the wieghts are sorted one after the other.
+Unstructured pruning is always L1, because the weights are sorted one after the other.
 
 the ```JIT``` compiler can be used to increase the performance using the ```optimized_execution```. However, this does not always result in a smaller model, and it could in fact make the network increase in size. 
 
