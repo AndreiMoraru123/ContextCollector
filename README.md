@@ -34,7 +34,7 @@ Frame goes in, caption comes out.
 
 The functional purpose of this project could be summed up as *Instance Captioning*, as in not trying to caption the whole frame, but only parts of it. This approach is not only going to be faster (because the model is not attempting to encode the information of the whole image), but it can also prove more reliable for video inference, through a very simple mechanism I will call "expansion". 
 
-The deeper motivation for working on this is, however, more profound:
+The deeper motivation for working on this is, however, more profound.
 
 For decades, language and vision were treated as completely different problems and naturally, the paths of engineering that have emerged to provide solutions for them were divergent to begin with.
 
