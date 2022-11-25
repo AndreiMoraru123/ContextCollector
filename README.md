@@ -60,7 +60,7 @@ As per all sequence to sequence models, the vocab has to have a known ```<start>
 
 The vocabulary is, of course, built on the COCO annotations available for the images.
 
-:point_right: The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
+The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
 
 For this reason, two vocabulary "hyper-parameters" can be tuned:
 
@@ -127,7 +127,7 @@ alpha = softmax((W1 * h) + (W2 * s))
 
 where ```h``` is the output of the encoder, ```s``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
 
-:point_right: Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
+Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
@@ -251,7 +251,7 @@ Always looking for the next best is called a ___greedy___ search, and you can ac
 
 Again, keep in mind that, provided you have one, this search will also be transfered to your graphics card, so you may run out of memory if you try to keep count of too many posibilities. 
 
-:point_right: That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
+That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
 
 I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
 
@@ -355,7 +355,7 @@ I am using:
 * CUDA 11.7
 * cuDNN 8.5 (so that it works with OpenCV 4.5.2) 
 
-:point_right: Be aware that when building OpenCV there will be no errors if your pick incompatible versions, but unless everything clicks the net will refuse to run of the GPU
+Be aware that when building OpenCV there will be no errors if your pick incompatible versions, but unless everything clicks the net will refuse to run of the GPU
 
 Using the computation ```FPS = 1 / inference_time```, the model is able to average 4 frames per second.
 
