@@ -190,7 +190,7 @@ In the picture up above as well as in this model, ```h``` represents the ___shor
 
 To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
 
-```
+```python
 embed_size = 300  # this is the size of the embedding of a word, 
                   # i.e. exactly how many numbers will represent each word in the vocabulary.
                   # This is done using a look-up table through nn.Embedding 
@@ -210,7 +210,7 @@ Now, there is no reason to keep all three at the same size, but you can intuitiv
 
 The rest of the parsed arguments are:
 
-```
+```python
 dropout = 0.5  # the only drop out is at the last fully connected layer in the decoder,
                # the one that outputs the predictions based on the resulted hidden state of the LSTM cell
                
@@ -328,7 +328,7 @@ I also cannot provide the encoder here as there are size constraints, but any pr
 
 The options for running the model are as follow:
 
-```
+```python
 --video  # this is an mp4 video that will be used for inference, I provide one in the video folder
 --expand  # this is the expanding ratio of the bounding box ROI after each mistake
 --backend  # this is best set to 'cuda', but be weary of memory limitations
