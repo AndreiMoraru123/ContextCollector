@@ -390,3 +390,21 @@ Shift                    |           In             |         Perspective
 Broaden                    |           The             |         View
 :-------------------------:|:-------------------------:|:-------------------------:
 ![p1](https://user-images.githubusercontent.com/81184255/203182932-454712e1-a2ce-4bc4-91b6-3a5103944160.gif) | ![p2](https://user-images.githubusercontent.com/81184255/203182945-4e37635b-88e5-4f3e-acea-b9dec795d2a9.gif) | ![p3](https://user-images.githubusercontent.com/81184255/203182986-836c4610-d8a0-4043-abbf-c7eee78fb5ed.gif)
+
+```citation
+@misc{https://doi.org/10.48550/arxiv.1502.03044,
+  doi = {10.48550/ARXIV.1502.03044},
+  
+  url = {https://arxiv.org/abs/1502.03044},
+  
+  author = {Xu, Kelvin and Ba, Jimmy and Kiros, Ryan and Cho, Kyunghyun and Courville, Aaron and Salakhutdinov, Ruslan and Zemel, Richard and Bengio, Yoshua},
+  
+  keywords = {Machine Learning (cs.LG), Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Show, Attend and Tell: Neural Image Caption Generation with Visual Attention},
+  
+  publisher = {arXiv},
+  year = {2015},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+```
