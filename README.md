@@ -355,7 +355,7 @@ I am using:
 * CUDA 11.7
 * cuDNN 8.5 (so that it works with OpenCV 4.5.2) 
 
-Be aware that when building OpenCV there will be no errors if your pick incompatible versions, but unless everything clicks the net will refuse to run of the GPU
+Be aware that when building OpenCV there will be no errors if your pick incompatible versions. However, unless everything clicks, the net will refuse to run of the GPU
 
 Using the computation ```FPS = 1 / inference_time```, the model is able to average 4 frames per second.
 
