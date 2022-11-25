@@ -121,7 +121,7 @@ The original paper, as well as this implementation use [___Additive / Bahdanau A
 
 The formula for the Bahdanau Attention is the essentially the following:
 
-```
+```python
 alpha = softmax((W1 * h) + (W2 * s))
 ```
 
@@ -154,14 +154,14 @@ The embedded image captions are concatenated with gated attention encodings and 
 
 Concatenation in code will look like this:
 
-```
+```python
 self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
 ```
 
 The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states.
 
 
-```
+```python
 hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),  # input
                                       (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )  # hidden
 ```
@@ -235,7 +235,7 @@ The ```train_transform``` the images go through before being passed to the encod
 
 Since the input sizes here do not vary it may make sense to set:
 
-```
+```python
 torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
 ```
 
