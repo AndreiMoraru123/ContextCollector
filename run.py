@@ -23,6 +23,7 @@ def predict_video(video, expand=0.05, backend="cuda", k=5, conf=0.7, nms=0.01):
     while cap.isOpened():
 
         ret, frame = cap.read()
+        start_time = time.time()
         gpu_frame = cv2.cuda_GpuMat(frame)
         stream = cv2.cuda_Stream()
         gpu_frame.upload(frame, stream)
@@ -101,6 +102,13 @@ def predict_video(video, expand=0.05, backend="cuda", k=5, conf=0.7, nms=0.01):
                             (x + w + expanding_factor * (x + w)) < width and \
                             (y + h + expanding_factor * (y + h)) < height:
                         expanding_factor += expand
+
+                end_time = time.time()
+                inference_time = end_time - start_time
+
+                FPS = 1.0 / inference_time
+
+                cv2.putText(frame, "FPS: {:.2f}".format(FPS), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
             cv2.imshow("window", frame)
 
