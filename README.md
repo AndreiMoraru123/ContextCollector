@@ -393,6 +393,12 @@ Broaden                    |           The             |         View
 
 ![lambo](https://user-images.githubusercontent.com/81184255/204081061-2899391d-943a-4985-908e-a478ebd38a0e.gif)
 
+Change                    |           Of             |         Paradigm
+:-------------------------:|:-------------------------:|:-------------------------:
+![part1](https://user-images.githubusercontent.com/81184255/204109261-c72ffe67-f2a8-440d-888c-6a5b2719522a.gif) | 
+![part2](https://user-images.githubusercontent.com/81184255/204109275-37d19b12-9f3b-4d20-a809-97a2e3a091d0.gif) | ![part3](https://user-images.githubusercontent.com/81184255/204109286-19484274-f793-4b76-ad44-3338fe387dad.gif)
+
+
 
 Based on the original paper:
 
