@@ -395,7 +395,8 @@ Broaden                    |           The             |         View
 
 Change                     |           Of              |         Paradigm
 :-------------------------:|:-------------------------:|:-------------------------:
-![p1](https://user-images.githubusercontent.com/81184255/203182932-454712e1-a2ce-4bc4-91b6-3a5103944160.gif) | ![p2](https://user-images.githubusercontent.com/81184255/203182945-4e37635b-88e5-4f3e-acea-b9dec795d2a9.gif) | ![p3](https://user-images.githubusercontent.com/81184255/203182986-836c4610-d8a0-4043-abbf-c7eee78fb5ed.gif)
+![part1](https://user-images.githubusercontent.com/81184255/204109406-e20537cd-f98d-49e0-9a8c-a70ee2e23068.gif) | 
+![part2](https://user-images.githubusercontent.com/81184255/204109415-ca6d7b99-fdde-4a5e-ac20-9498803dc936.gif) | ![part3](https://user-images.githubusercontent.com/81184255/204109428-629d1676-88f6-4ce2-b5c1-46485f2de3db.gif)
 
 
 
