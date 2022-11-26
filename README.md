@@ -1,6 +1,6 @@
 # COCO Context Collector
 
-## It's a COntextualizer, trained on COCO! See what I did there?
+## It's a Contextualizer, trained on COCO! See what I did there?
 
 ### This mixed vision-language model gets better by making mistakes
 
@@ -12,7 +12,7 @@ Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to s
 
 Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
 
-Built using PyTorch :fire:
+Built using PyTorch
 
 Explained in depth further down in this ```README```.
 
@@ -24,7 +24,9 @@ Explained in depth further down in this ```README```.
 
 Frame goes in, caption comes out.
 
-<img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="1000" height="500"/>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="500"/>
+</p>
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
@@ -32,7 +34,7 @@ Frame goes in, caption comes out.
 
 The functional purpose of this project could be summed up as *Instance Captioning*, as in not trying to caption the whole frame, but only parts of it. This approach is not only going to be faster (because the model is not attempting to encode the information of the whole image), but it can also prove more reliable for video inference, through a very simple mechanism I will call "expansion". 
 
-The deeper motivation for working on this is, however, more profound:
+The deeper motivation for working on this is, however, more profound.
 
 For decades, language and vision were treated as completely different problems and naturally, the paths of engineering that have emerged to provide solutions for them were divergent to begin with.
 
@@ -58,7 +60,7 @@ As per all sequence to sequence models, the vocab has to have a known ```<start>
 
 The vocabulary is, of course, built on the COCO annotations available for the images.
 
-:point_right: The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
+The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
 
 For this reason, two vocabulary "hyper-parameters" can be tuned:
 
@@ -119,7 +121,7 @@ The original paper, as well as this implementation use [___Additive / Bahdanau A
 
 The formula for the Bahdanau Attention is the essentially the following:
 
-```
+```python
 alpha = softmax((W1 * h) + (W2 * s))
 ```
 
@@ -152,27 +154,35 @@ The embedded image captions are concatenated with gated attention encodings and 
 
 Concatenation in code will look like this:
 
-```
+```python
 self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
 ```
 
 The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states.
 
 
-```
+```python
 hidden_state, cell_state = self.lstm( torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),  # input
                                       (hidden_state[:batch_size_t], cell_state[:batch_size_t]) )  # hidden
 ```
 
-The cell outputs a tuple made of the next hidden and cell states like in the picture below. 
+The cell outputs a tuple made out of the next hidden and cell states like in the picture down below. 
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/81184255/203153685-bdbb2818-541b-4844-8944-24993394af9b.jpg" width = "500"/>
+  <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg" width = "500"/>
 </p>
 
-The intuition behind the mechanism of the long short term memory unit is as follows:
 
+The intuition and computation behind the mechanism of the long short term memory unit are as follow:
 
+The cell operates with a ___long term memory___ and a ___short term___ one. As their names intuitively convey, the former is concerned with a more general sense of state, while the latter is concentrated around what it has just seen. 
+
+In the picture up above as well as in this model, ```h``` represents the ___short term memory___, or the  ___hidden state___, while ```c``` represents the ___long term memory___, or the ___cell state___.
+
+1. The long term memory is initially passed through a ___forget gate___.The forget factor of this gate is computed using a ```sigmoid```, which ideally behaves like a binary selector (something either gets forgotten [0] or not [1]. In practice, most values will not be saturated so the information will be _somewhat_ forgotten (0,1). The current ___hidden state___ or ___short term memory___ is passed through the sigmoid to achieve this forget factor, which is then point-by-point multiplied with the ___long term memory___ or ___cell state___.
+2. The short term memory will be joined by the ___input event___, ```x``` (which represents what the cell has just seen/experienced) in the ___input gate___, also called the ___learn gate___. This computation is done by gating both the input and the hidden state through an ___ignore gate___. The ignore factor of the gate is represented by a ```sigmoid``` to again ideally classify what has to be ignored [0] and what not [1]. How much is to be ignored is then decided by a ```tanh``` activation.
+3. The ___long term memory___ joined by the newly aquired information in the ___input gate___ is passed into the ___remember gate___ and it becomes the new ___cell state___ and the new ___long term memory___ of the LSTM. The operation is a point-by-point addition of the two.
+4. The ___output gate___ takes in all of the information from the input, hidden and cell state and becomes the new ___hidden state___ and ___short term memory___ of the network. The ___long term memory___ is passed through a ```tanh``` while the ___short term memory___ is passed through a ```sigmoid```, before being multiplied point-by-point in the final computation.
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
@@ -180,9 +190,9 @@ The intuition behind the mechanism of the long short term memory unit is as foll
 
 To train this model run the ```train.py``` file with the argument parsers tailored to your choice. My configuration so far has been something like this:
 
-```
-embed_size = 300  # this is the size of the words embedding, 
-                  # i.e. exactly how many numbers will represent the words in the vocabulary.
+```python
+embed_size = 300  # this is the size of the embedding of a word, 
+                  # i.e. exactly how many numbers will represent each word in the vocabulary.
                   # This is done using a look-up table through nn.Embedding 
 
 attention_dim = 300  # this is the size of the full length attention dimension,
@@ -200,7 +210,7 @@ Now, there is no reason to keep all three at the same size, but you can intuitiv
 
 The rest of the parsed arguments are:
 
-```
+```python
 dropout = 0.5  # the only drop out is at the last fully connected layer in the decoder,
                # the one that outputs the predictions based on the resulted hidden state of the LSTM cell
                
@@ -225,7 +235,7 @@ The ```train_transform``` the images go through before being passed to the encod
 
 Since the input sizes here do not vary it may make sense to set:
 
-```
+```python
 torch.backends.cudnn.benchmark = True  # optimize hardware algorithm
 ```
 
@@ -253,17 +263,17 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
 
 ## YOLO and the Perspective Expansion
 
-Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, and will perform as such on the testing set. 
+Trying to output a caption for each frame of a video can be painful, even with attention. The model was trained on images from the COCO dataset, which are context rich scenarios, focused mainly on a single event, and thus  will perform as such on the testing set. 
 
-But "real life" videos are different, each frame is related to the previous one and not all of them have much going on.
+But "real life" videos are different, each frame is related to the previous one and not all of them have much going on in one place, but rather many things happening at once.
 
-* For this reason, I use [YOLOv4](https://arxiv.org/abs/2004.10934) to get an initial object of interest in the frame. 
+* For this reason, I use [a tiny YOLOv4](https://github.com/AndreiMoraru123/ContextCollector/tree/main/YOLO) model to get an initial object of interest in the frame. 
 * A caption is then generated for the region of interest (ROI) bounded by the YOLO generated box
 * If the prediction is far off the truth (no word in the sentence matches the label output by the detector), the algo expands the ROI by a given factor until it does or until a certain number of tries have been made, to avoid infinite loops
 * Using the newly expanded ROI, the model is able to get more context out of the frame
 * As you can see in the examples, the expansion factor usually finds its comfortable space before reaching a full sized image
 * That means there are significant gains in inference speeds and better predictions
-* Inspired by [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands, but not when being correct.
+* Much like in [Viola Jones](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf), this model expands, but not when being correct.
 * Instead, it grows by making obvious mistakes, and in fact relies on it to give its best performance in terms of context understanding.
 
 ![p12](https://user-images.githubusercontent.com/81184255/203032117-f7f80c93-ffea-46f4-a282-37195384f4b3.gif)
@@ -296,7 +306,7 @@ But no more performant in terms of speed
 
 Local pruning works layer by layer across every layer, while global pruning wipes across all layers indiscriminately. But for the purpose of this model, they both produce no gain.
 
-Unstructured pruning is by default L1, because the wieghts are sorted one after the other.
+Unstructured pruning is always L1, because the weights are sorted one after the other.
 
 the ```JIT``` compiler can be used to increase the performance using the ```optimized_execution```. However, this does not always result in a smaller model, and it could in fact make the network increase in size. 
 
@@ -310,13 +320,60 @@ The rest of the inference pipeline just loads the ```state_dicts``` of each mode
 
 ## Running the model
 
+To test the model you can run the ```run.py``` file by parsing the needed arguments.
+
+Since the inference of the model relies on teacher forcing, i.e. using the whole caption for inference regardless of the last generated sequence, for now the whole vocabulary is needed to test the model, meaning that the dataset is needed as well, so one will have to train the model before running it the way it works now. 
+
+I also cannot provide the encoder here as there are size constraints, but any pretrained resnet will work (do make sure to behead it first if you choose to try this out).
+
+The options for running the model are as follow:
+
+```python
+--video  # this is an mp4 video that will be used for inference, I provide one in the video folder
+--expand  # this is the expanding ratio of the bounding box ROI after each mistake
+--backend  # this is best set to 'cuda', but be weary of memory limitations
+--k  # this is the number of nodes (captions) held for future consideration in the beam search
+--conf  # this is the confidence threshold for YOLO
+--nms  # this is the non-maximum suppression for the YOLO rendered bounding boxes
+```
+
+YOLO inference is done using the ```dnn``` module from ```OpenCV```.
+
+
 ![p14](https://user-images.githubusercontent.com/81184255/203032384-3a2cb769-bc94-45e0-9048-e6eecbe75fd6.gif)
 
 ## Hardware and Limitations
 
+My configuration is the following:
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/81184255/203286519-82ed38a6-d63a-424b-bc91-bf906412bf68.png" width = "500"/>
+</p>
+
+I am using:
+* a turing Geforce GTX 1660 TI with 6GB of memory (CUDA arch bin of 7.5)
+* CUDA 11.7
+* cuDNN 8.5 (so that it works with OpenCV 4.5.2) 
+
+Be aware that when building OpenCV there will be no errors if your pick incompatible versions. However, unless everything clicks, the net will refuse to run of the GPU
+
+Using the computation ```FPS = 1 / inference_time```, the model is able to average 4 frames per second.
+
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
-## Optimization
+## Future outlook and goals
+
+What I am currently looking into is optimization. 
+
+The current model is working, but in a hindered state. With greater embeddings and a richer vocabulary the outputs can potentially be better. Training in larger batches will also finish faster. 
+
+For this reason, I am now currently working on Weight Quantization and Knowledge Distillation.
+
+I am also currently looking into deployment tools using ONNX. 
+
+These are both not provided off the bat for artificial intelligence models, so there is really no go-to solution. I will keep updating the repository as I make progress.
+
+I am also playing around with the [Intel Neural Compute Stick](https://www.intel.com/content/www/us/en/developer/tools/neural-compute-stick/overview.html) and the OpenVINO api to split the inference of the different networks away from running out of CUDA memory.
 
 ![p16](https://user-images.githubusercontent.com/81184255/203032623-d02fb14a-8054-421e-9bba-306784d91207.gif)
 
@@ -333,3 +390,18 @@ Shift                    |           In             |         Perspective
 Broaden                    |           The             |         View
 :-------------------------:|:-------------------------:|:-------------------------:
 ![p1](https://user-images.githubusercontent.com/81184255/203182932-454712e1-a2ce-4bc4-91b6-3a5103944160.gif) | ![p2](https://user-images.githubusercontent.com/81184255/203182945-4e37635b-88e5-4f3e-acea-b9dec795d2a9.gif) | ![p3](https://user-images.githubusercontent.com/81184255/203182986-836c4610-d8a0-4043-abbf-c7eee78fb5ed.gif)
+
+Based on the original paper:
+
+```bibtex
+@misc{https://doi.org/10.48550/arxiv.1502.03044,
+  doi = {10.48550/ARXIV.1502.03044},
+  url = {https://arxiv.org/abs/1502.03044},
+  author = {Xu, Kelvin and Ba, Jimmy and Kiros, Ryan and Cho, Kyunghyun and Courville, Aaron and Salakhutdinov, Ruslan and Zemel, Richard and Bengio, Yoshua},
+  keywords = {Machine Learning (cs.LG), Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Show, Attend and Tell: Neural Image Caption Generation with Visual Attention},
+  publisher = {arXiv},
+  year = {2015},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+```
