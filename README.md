@@ -397,9 +397,11 @@ Multi                      |           Purpose
 :-------------------------:|:-------------------------:
 ![p1](https://user-images.githubusercontent.com/81184255/204110737-c5d11153-7a69-4237-bad4-d7562beef64c.gif) | ![p2](https://user-images.githubusercontent.com/81184255/204110740-974b491c-47ea-4cf2-a3cc-19633ee425ba.gif)
 
-Multi                      |           Purpose             
-:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/81184255/204111421-8268d5e8-730e-4838-8dff-8b7cd25e0fe7.gif" width="500"/> |  <img src="https://user-images.githubusercontent.com/81184255/204111428-0798c5ed-d0f2-4062-8a97-fd5cd39ab74f.gif" width="500"/> | <img src="https://user-images.githubusercontent.com/81184255/204111431-eba524dd-3756-4bc5-a449-cd07eb4ae15b.gif" width="500"/> | <img src="https://user-images.githubusercontent.com/81184255/204111434-ef962dd0-b366-4347-87e6-7a15292c4090.gif" width="500"/>
+| First Header  | Second Header |
+| ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/81184255/204111421-8268d5e8-730e-4838-8dff-8b7cd25e0fe7.gif" width="500"/> |  <img src="https://user-images.githubusercontent.com/81184255/204111428-0798c5ed-d0f2-4062-8a97-fd5cd39ab74f.gif" width="500"/> |
+|  <img src="https://user-images.githubusercontent.com/81184255/204111431-eba524dd-3756-4bc5-a449-cd07eb4ae15b.gif" width="500"/> | <img src="https://user-images.githubusercontent.com/81184255/204111434-ef962dd0-b366-4347-87e6-7a15292c4090.gif" width="500"/> |
+
 
 ![part1](https://user-images.githubusercontent.com/81184255/204109641-7b862a27-e3d6-4259-b5db-ea6f0306850d.gif)
 
