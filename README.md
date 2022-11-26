@@ -393,9 +393,12 @@ Broaden                    |           The             |         View
 
 ![lambo](https://user-images.githubusercontent.com/81184255/204081061-2899391d-943a-4985-908e-a478ebd38a0e.gif)
 
-Change                     |           Of              |         Paradigm
-:-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/81184255/204109406-e20537cd-f98d-49e0-9a8c-a70ee2e23068.gif" width = "249"/> | <img src="https://user-images.githubusercontent.com/81184255/204109415-ca6d7b99-fdde-4a5e-ac20-9498803dc936.gif" width = "249"/> |  <img src="https://user-images.githubusercontent.com/81184255/204109428-629d1676-88f6-4ce2-b5c1-46485f2de3db.gif" width = "249"/>
+![part1](https://user-images.githubusercontent.com/81184255/204109641-7b862a27-e3d6-4259-b5db-ea6f0306850d.gif)
+
+![part2](https://user-images.githubusercontent.com/81184255/204109644-ecfc9e87-2fe4-405d-a0f4-72bdc475230f.gif)
+
+![part3](https://user-images.githubusercontent.com/81184255/204109646-2ef02fbd-133e-40c7-b9b0-766d0fd741d2.gif)
+
 
 
 
