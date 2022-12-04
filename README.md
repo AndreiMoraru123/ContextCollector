@@ -117,7 +117,7 @@ Since the encoder is already trained and can output a competent feature map (we 
 
 ## What kind?
 
-The original paper, as well as this implementation use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
+The original paper, as well as this implementation, use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
 
 The formula for the Bahdanau Attention is the essentially the following:
 
