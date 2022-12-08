@@ -357,7 +357,7 @@ I am using:
 
 Be aware that when building OpenCV there will be no errors if your pick incompatible versions. However, unless everything clicks, the net will refuse to run of the GPU
 
-Using the computation ```FPS = 1 / inference_time```, the model is able to average 4 frames per second.
+Using the computation ```FPS = 1 / inference_time```, the model is able to average 5 frames per second.
 
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
