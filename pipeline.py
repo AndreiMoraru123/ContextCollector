@@ -11,8 +11,8 @@ import numpy as np
 
 cudnn.benchmark = True
 
-encoder_file = 'encoder-1-300.ckpt'
-decoder_file = 'decoder-1-300.ckpt'
+encoder_file = 'encoder-5-300.ckpt'
+decoder_file = 'decoder-5-300.ckpt'
 
 encoder = EncoderCNN()
 encoder.load_state_dict(torch.load(os.path.join('models', encoder_file)))
@@ -108,7 +108,8 @@ def draw_prediction(img, class_id, x, y, x_plus_w, y_plus_h, colors, classes, k)
     color = colors[class_id]
 
     if label == 'motorbike' or label == 'car' or label == 'truck' or label == 'bus' or label == 'bicycle' \
-            or label == "person" or label == "dog" or label == "cat" or label == "horse" or label == "bird":
+            or label == "person" or label == "dog" or label == "cat" or label == "horse" or label == "bird" \
+            or label == "cow":
 
         cv2.rectangle(img, (x, y), (x_plus_w, y_plus_h), color, 2)
         roi = img[y: y_plus_h, x: x_plus_w]

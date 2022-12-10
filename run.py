@@ -15,6 +15,9 @@ class_names = load_class_names(namesfile)
 
 def predict_video(video, expand=0.05, backend="cuda", k=5, conf=0.7, nms=0.01):
 
+    if video == "webcam":
+        video = 0
+
     expanding_factor = 0
 
     cv2.namedWindow("window")
