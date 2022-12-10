@@ -12,7 +12,7 @@ Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to s
 
 Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
 
-Built using PyTorch
+Built with PyTorch
 
 Explained in depth further down in this ```README```.
 
@@ -32,7 +32,7 @@ Frame goes in, caption comes out.
 
 ## Motivation
 
-The functional purpose of this project could be summed up as *Instance Captioning*, as in not trying to caption the whole frame, but only parts of it. This approach is not only going to be faster (because the model is not attempting to encode the information of the whole image), but it can also prove more reliable for video inference, through a very simple mechanism I will call "expansion". 
+The functional purpose of this project could be summed up as *Instance Captioning*, as in not trying to caption the whole frame, but only part of it. This approach is not only going to be faster (because the model is not attempting to encode the information of the whole image), but it can also prove more reliable for video inference, through a very simple mechanism I will call "expansion". 
 
 The deeper motivation for working on this is, however, more profound.
 
@@ -117,7 +117,7 @@ Since the encoder is already trained and can output a competent feature map (we 
 
 ## What kind?
 
-The original paper, as well as this implementation use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
+The original paper, as well as this implementation, use [___Additive / Bahdanau Attention___](https://arxiv.org/abs/1409.0473)
 
 The formula for the Bahdanau Attention is the essentially the following:
 
@@ -357,7 +357,7 @@ I am using:
 
 Be aware that when building OpenCV there will be no errors if your pick incompatible versions. However, unless everything clicks, the net will refuse to run of the GPU
 
-Using the computation ```FPS = 1 / inference_time```, the model is able to average 4 frames per second.
+Using the computation ```FPS = 1 / inference_time```, the model is able to average 5 frames per second.
 
 ![p15](https://user-images.githubusercontent.com/81184255/203032605-d671478d-c46f-4292-9727-6bcd74dd724c.gif)
 
@@ -387,9 +387,24 @@ Shift                    |           In             |         Perspective
 
 ![p1](https://user-images.githubusercontent.com/81184255/203173602-62e9234d-5043-47fd-8bcb-6942017a0de2.gif)
 
-Broaden                    |           The             |         View
+The                    |           Big             |         Picture
 :-------------------------:|:-------------------------:|:-------------------------:
 ![p1](https://user-images.githubusercontent.com/81184255/203182932-454712e1-a2ce-4bc4-91b6-3a5103944160.gif) | ![p2](https://user-images.githubusercontent.com/81184255/203182945-4e37635b-88e5-4f3e-acea-b9dec795d2a9.gif) | ![p3](https://user-images.githubusercontent.com/81184255/203182986-836c4610-d8a0-4043-abbf-c7eee78fb5ed.gif)
+
+![lambo](https://user-images.githubusercontent.com/81184255/204081061-2899391d-943a-4985-908e-a478ebd38a0e.gif)
+
+Multi                      |           Purpose             
+:-------------------------:|:-------------------------:
+![p1](https://user-images.githubusercontent.com/81184255/204110737-c5d11153-7a69-4237-bad4-d7562beef64c.gif) | ![p2](https://user-images.githubusercontent.com/81184255/204110740-974b491c-47ea-4cf2-a3cc-19633ee425ba.gif)
+
+<p align="center">
+
+| Context  | Collector |
+| ------------- | ------------- |
+| <p align="center"> <img src="https://user-images.githubusercontent.com/81184255/204111421-8268d5e8-730e-4838-8dff-8b7cd25e0fe7.gif"/> </p> | <p align="center"> <img src="https://user-images.githubusercontent.com/81184255/204111428-0798c5ed-d0f2-4062-8a97-fd5cd39ab74f.gif" /> </p> |
+| <p align="center"> <img src="https://user-images.githubusercontent.com/81184255/204111431-eba524dd-3756-4bc5-a449-cd07eb4ae15b.gif" /> </p> | <p align="center"> <img src="https://user-images.githubusercontent.com/81184255/204111434-ef962dd0-b366-4347-87e6-7a15292c4090.gif" /> </p> |
+
+</p> 
 
 Based on the original paper:
 
