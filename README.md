@@ -322,7 +322,7 @@ The rest of the inference pipeline just loads the ```state_dicts``` of each mode
 
 To test the model you can run the ```run.py``` file by parsing the needed arguments.
 
-Since the prediction of the net relies on teacher forcing, i.e. using the whole caption for inference regardless of the last generated sequence, the whole vocabulary is needed to test the model, meaning that the ```vocab.pkl``` file has to be used.
+Since the prediction of the net relies on teacher forcing, i.e. using the whole caption for inference regardless of the last generated sequence, the whole vocabulary is needed to test the model, meaning that the ```vocab.pkl``` file has to be used, as well as the dataset.
 
 I also cannot provide the encoder here as there are size constraints, but any pretrained resnet will work (do make sure to behead it first if you choose to try this out).
 
