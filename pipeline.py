@@ -24,7 +24,7 @@ with torch.jit.optimized_execution(True):
     encoder = torch.jit.trace(encoder, dummy_input)
     encoder.save("models/encoder.pt")
 
-encoder = torch.jit.load(os.path.join('models', 'encoder.pt'))
+encoder = torch.jit.load(os.path.join('models', 'encoder.pt'), map_location=torch.device('cuda'))
 
 transform_test = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -143,7 +143,6 @@ def draw_prediction(img, class_id, x, y, x_plus_w, y_plus_h, colors, classes, k)
             print(sentence)
 
             return sentence, word_list, label
-
 
 def clean_sentence(seq):
     return str(' '.join([data_loader.dataset.vocab.idx2word[idx] for idx in seq if (idx != 0 and idx != 1)]))
