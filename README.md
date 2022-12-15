@@ -54,7 +54,7 @@ For this particular model, I am concerned with detection and captioning.
 
 Before the ```CocoDataset``` can be created in the [cocodata.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/cocodata.py) file, a ```vocabulary``` instance of the ```Vocabulary``` class has to be constructed using the [vocabulary.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/vocabulary.py) file. This can be conveniently done using the ```tokenize``` function of of ```nltk``` module.
 
-The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash map structures (Python Dictionaries), ```word2idx``` and ```idx2word```.
+The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash maps (dicts), ```word2idx``` and ```idx2word```.
 
 As per all sequence to sequence models, the vocab has to have a known ```<start>``` token, as well as an ```<end>``` one. An ```<unk>``` token for the unknown words, yet to be added to the file acts as a selector for what gets in. 
 
@@ -77,7 +77,7 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-As found in the [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
+As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
 ### 1. [The CNN Encoder](#encoder)
 ### 2. [The Attention Network](#attention)
