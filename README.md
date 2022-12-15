@@ -224,9 +224,9 @@ word_threshold = 6  #  the minimum number of apparitions for a word to be includ
 vocab_from_file = False  # if this is the first time of training / you do not have the pickle file,
                          # then you will have to generate the vocabulary first
                        
-# save_every = 1  # save every chosen epoch
+save_every = 1  # save every chosen epoch
 
-# print_every = 100  # log stats every chosen number of batches
+print_every = 100  # log stats every chosen number of batches
 ```
 
 The `loss` function is ```CrossEntropyLoss``` and should not be changed as this is the only one that makes sense. Captioning is just multi-label classifcation. 
