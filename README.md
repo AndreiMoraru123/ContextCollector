@@ -81,7 +81,9 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-$$ I \to $$ Input image
+```math
+$ I \to $ Input image
+```
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
