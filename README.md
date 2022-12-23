@@ -81,9 +81,11 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-```tex
+```math
 I \to  Input \: Image \\
+
 S = { S_0, S_1, ..., S_n } \to Target \: Sequence, \: S_i \in \mathbb{R}^{k} \\
+
 p(S | I) \to likelihood \\
 ```
 
