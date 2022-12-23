@@ -83,9 +83,16 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ```math
 I \to  Input \: Image \\
+```
 
-S = { S_0, S_1, ..., S_n } \to Target \: Sequence, \: S_i \in \mathbb{R}^{k} \\
+```math
+S = { { S_0, S_1, ..., S_n } } \to Target \: Sequence \: of \: words, \: S_i \in \mathbb{R}^{K} \\
+```
 
+```math
+Where \: K = size \: of \: dictionary
+
+```math
 p(S | I) \to likelihood \\
 ```
 
