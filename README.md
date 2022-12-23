@@ -82,19 +82,19 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 ## Model description
 
 ```math
-I \to  Input \: region \: of \: interest \\
+I \to  \text{Input ROI (region of interest)} \\
 ```
 
 ```math
-S = \{ S_0, S_1, ..., S_n \} \to Target \: sequence \: of \: words, \: S_i \in \mathbb{R}^{K} \\
+S = \{ S_0, S_1, ..., S_n \} \to T\text{Target sequence of words}, \: S_i \in \mathbb{R}^{K} \\
 ```
 
 ```math
-Where \: K = size \: of \: dictionary
+Where \: K = \text{the size of the dictionary}
 ```
 
 ```math
-p(S | I) \to likelihood \\
+p(S | I) \to \text{likelihood} \\
 ```
 
 The Neural Caption model is trying to tweak its paramethers in order to maximize the probability of a generated sequence being correct given the frame
