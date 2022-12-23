@@ -86,11 +86,11 @@ I \to  \text{Input ROI (region of interest)} \\
 ```
 
 ```math
-S = \{ S_0, S_1, ..., S_n \} \to T\text{Target sequence of words}, \: S_i \in \mathbb{R}^{K} \\
+S = \{ S_0, S_1, ..., S_n \} \to \text{Target sequence of words}, \: S_i \in \mathbb{R}^{K} \\
 ```
 
 ```math
-Where \: K = \text{the size of the dictionary}
+\text{Where} \: K = \text{the size of the dictionary}
 ```
 
 ```math
@@ -105,6 +105,20 @@ The goal is to tweak the model's parameters in order to maximize the probability
 
 ```math
 \log p(S|I) = \sum_{i=1}^{n} \underbrace{\log p(S_i|S_{1},\dots,S_{i-1},I)}_{\text{modeled with an RNN}}
+```
+
+Then the forward feed is as follows:
+
+```math
+x_{-1} = \text{CNN}(I)
+```
+
+```math
+x_t = \text{WeSt}, t \in \{0, \dots, N-1\}
+```
+
+```math
+p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 ```
 
 
