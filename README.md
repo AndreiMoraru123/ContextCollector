@@ -121,6 +121,12 @@ x_t = \text{WeSt}, t \in \{0, \dots, N-1\}
 p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 ```
 
+The expansion mechanism builts upon detection in the following way:
+
+```math
+\text{If } \exists S_i \neq \text{label} \text{ for any } i \in \{1, \dots, n\}, \text{ then } I = I + \alpha \cdot I, \text{ where } \alpha \text{ is a percentage}
+```
+
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
