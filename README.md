@@ -86,7 +86,7 @@ I \to  Input \: Image \\
 ```
 
 ```math
-S = { { S_0, S_1, ..., S_n } } \to Target \: Sequence \: of \: words, \: S_i \in \mathbb{R}^{K} \\
+S = \{ S_0, S_1, ..., S_n \} \to Target \: Sequence \: of \: words, \: S_i \in \mathbb{R}^{K} \\
 ```
 
 ```math
