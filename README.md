@@ -127,7 +127,7 @@ The expansion mechanism builts upon detection in the following way:
 \text{If } \forall S_i \neq \text{label} \text{ for any } i \in \{1, \dots, n\}, \text{ then } I = I + \phi \cdot I, \text{ where } \phi \text{ is a percentage}
 ```
 
-Which means any time none of the output words match the prediction of the detector, we rescale the ROI in which the model looks, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
+Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
 
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
