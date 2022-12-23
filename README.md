@@ -178,7 +178,7 @@ Additive attention is a model in and of itself, because it is in essence just a 
 
 # Decoder
 
-I am using pretty much the same decoder proposed in the greatly elaborated [Image Captioning repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) with some caveats. Precisely:
+I am using pretty much the same implementation proposed in the greatly elaborated [Image Captioning repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) with some caveats. Precisely:
 
 1. I do not use padded sequences for the captions
 2. I tailored tensor dimensions and types for a different pipeline (and dataset as well, the repo uses COCO 2014), so you may see differences
