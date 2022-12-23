@@ -91,6 +91,7 @@ S = { { S_0, S_1, ..., S_n } } \to Target \: Sequence \: of \: words, \: S_i \in
 
 ```math
 Where \: K = size \: of \: dictionary
+```
 
 ```math
 p(S | I) \to likelihood \\
