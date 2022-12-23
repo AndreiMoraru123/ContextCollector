@@ -104,7 +104,7 @@ The Neural Caption model is trying to tweak its paramethers in order to maximize
 ```
 
 ```math
- \sum_{i=1}^{n} \log p(S_i|S_{<i},I)
+\log p(S|I) = \sum_{i=1}^{n} \log p(S_i|S{<i}, I)
 ```
 
 
