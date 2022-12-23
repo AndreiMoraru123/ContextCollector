@@ -103,10 +103,6 @@ The Neural Caption model is trying to tweak its paramethers in order to maximize
 \theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
 ```
 
-```math
-p(S|I) = \prod_{i=1}^{n} p(S_i|S_{<i},I)
-
-```
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
