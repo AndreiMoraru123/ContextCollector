@@ -101,9 +101,9 @@ The Neural Caption model is trying to tweak its paramethers in order to maximize
 
 ```math
 \theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
+```
 
-<br> 
-
+```math
 p(S|I) = \prod_{i=1}^{n} p(S_i|S_{<i},I)
 
 ```
