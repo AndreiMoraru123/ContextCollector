@@ -1,5 +1,7 @@
 # COCO Context Collector
 
+![Model-modified](https://user-images.githubusercontent.com/81184255/209354415-5b2d6a0a-fcc8-4a57-8d02-bb746307be98.png)
+
 ## It's a Contextualizer, trained on COCO! See what I did there?
 
 ### This mixed vision-language model gets better by making mistakes
