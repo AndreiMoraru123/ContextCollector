@@ -82,11 +82,11 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 ## Model description
 
 ```math
-I \to  Input \: Image \\
+I \to  Input \: region \: of \: interest \\
 ```
 
 ```math
-S = \{ S_0, S_1, ..., S_n \} \to Target \: Sequence \: of \: words, \: S_i \in \mathbb{R}^{K} \\
+S = \{ S_0, S_1, ..., S_n \} \to Target \: sequence \: of \: words, \: S_i \in \mathbb{R}^{K} \\
 ```
 
 ```math
@@ -95,6 +95,17 @@ Where \: K = size \: of \: dictionary
 
 ```math
 p(S | I) \to likelihood \\
+```
+
+The Neural Caption model is trying to tweak its paramethers in order to maximize the probability of a generated sequence 
+
+```math
+\theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
+
+<br> 
+
+p(S|I) = \prod_{i=1}^{n} p(S_i|S_{<i},I)
+
 ```
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
