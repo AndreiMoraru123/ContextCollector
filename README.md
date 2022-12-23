@@ -66,7 +66,7 @@ The vocabulary is, of course, built on the COCO annotations available for the im
 
 The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
 
-For this reason, two vocabulary "hyper-parameters" can be tuned:
+For this reason, two vocabulary hyper-parameters can be tuned:
 
 ```python
 word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less than 6 times, it is discarded)
