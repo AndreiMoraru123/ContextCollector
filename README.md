@@ -124,7 +124,7 @@ p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 The expansion mechanism builts upon detection in the following way:
 
 ```math
-\text{If } \forall S_i \neq \text{label} \text{ for any } i \in \{1, \dots, n\}, \text{ then } I = I + \phi \cdot I, \text{ where } 0 \leq \phi \leq 1
+\text{If } \forall S_i \neq \text{label} \text{ for any } i \in \{1, \dots, n\}, \text{ then } I = I + \phi \cdot I, \text{ where } 0 \leq \phi \leq 1 \text{ and } I \leq I + \phi \cdot I \leq I_{\max}
 ```
 
 Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
