@@ -97,7 +97,7 @@ Where \: K = \text{the size of the dictionary}
 p(S | I) \to \text{likelihood} \\
 ```
 
-The Neural Caption model is trying to tweak its paramethers in order to maximize the probability of a generated sequence being correct given the frame
+The goal is to tweak the model's parameters in order to maximize the probability of a generated sequence being correct given a frame
 
 ```math
 \theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
