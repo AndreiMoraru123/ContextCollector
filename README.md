@@ -1,7 +1,7 @@
 # COCO Context Collector
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/81184255/209354415-5b2d6a0a-fcc8-4a57-8d02-bb746307be98.png">
+<img src="https://user-images.githubusercontent.com/81184255/209356720-edacff8c-d11e-43e6-aa72-b8834d00a34f.png">
 </p>
 
 ## It's a Contextualizer, trained on COCO! See what I did there?
