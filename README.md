@@ -82,7 +82,7 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 ## Model description
 
 ```math
-I \to  \text{Input ROI (region of interest)} \\
+I \to  \text{Input ROI (region of interest)}
 ```
 
 ```math
@@ -94,7 +94,7 @@ S = \{ S_0, S_1, ..., S_n \} \to \text{Target sequence of words}, \: S_i \in \ma
 ```
 
 ```math
-p(S | I) \to \text{likelihood} \\
+p(S | I) \to \text{likelihood}
 ```
 
 The goal is to tweak the model's parameters in order to maximize the probability of a generated sequence being correct given a frame
