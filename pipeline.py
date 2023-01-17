@@ -1,3 +1,6 @@
+import torchvision
+from torch.utils.mobile_optimizer import optimize_for_mobile
+
 from model import EncoderCNN, DecoderRNN, device
 from torch.backends import cudnn
 from cocodata import get_loader
@@ -10,12 +13,14 @@ import torch.nn.utils.prune as prune
 import numpy as np
 
 cudnn.benchmark = True
+use_fbgemm = True
 
 encoder_file = 'encoder-5-300.ckpt'
 decoder_file = 'decoder-5-300.ckpt'
 
 encoder = EncoderCNN()
 encoder.load_state_dict(torch.load(os.path.join('models', encoder_file)))
+
 encoder.eval()
 encoder.to(device)
 
@@ -25,6 +30,19 @@ with torch.jit.optimized_execution(True):
     encoder.save("models/encoder.pt")
 
 encoder = torch.jit.load(os.path.join('models', 'encoder.pt'), map_location=torch.device('cuda'))
+
+if use_fbgemm:
+    quantization_config = torch.quantization.get_default_qconfig('fbgemm')
+    torch.backends.quantized.engine = 'fbgemm'
+
+else:
+    quantization_config = torch.quantization.default_qconfig
+    torch.backends.quantized.engine = 'qnnpack'
+
+encoder.qconfig = quantization_config
+
+torch.quantization.prepare(encoder, inplace=True)
+torch.quantization.convert(encoder, inplace=True)
 
 transform_test = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -41,7 +59,7 @@ decoder_dim = 300
 
 vocab_size = len(data_loader.dataset.vocab)
 decoder = DecoderRNN(embed_size, attention_dim, decoder_dim, vocab_size, dropout=0.5)
-decoder.load_state_dict(torch.load(os.path.join('models', decoder_file)))
+decoder.load_state_dict(torch.load(os.path.join('models', decoder_file), map_location=torch.device('cuda')))
 decoder.eval()
 decoder.to(device)
 
@@ -83,6 +101,12 @@ def prune_model_global_unstructured(model, layer_type, proportion):
     for module, _ in module_tups:
         prune.remove(module, 'weight')
     return model
+
+
+# prune_model_l1_structured(encoder, torch.nn.Conv2d, 0.5)
+# prune_model_l1_unstructured(decoder, torch.nn.Linear, 0.5)
+# prune_model_l2_structured(decoder, torch.nn.Linear, 0.5)
+# prune_model_global_unstructured(decoder, torch.nn.Linear, 50)
 
 
 def get_output_layers(net):
@@ -143,6 +167,7 @@ def draw_prediction(img, class_id, x, y, x_plus_w, y_plus_h, colors, classes, k)
             print(sentence)
 
             return sentence, word_list, label
+
 
 def clean_sentence(seq):
     return str(' '.join([data_loader.dataset.vocab.idx2word[idx] for idx in seq if (idx != 0 and idx != 1)]))

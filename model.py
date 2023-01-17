@@ -45,11 +45,11 @@ class EncoderCNN(nn.Module):
 
 
 class Attention(nn.Module):
+
     """
     Attention equation: alpha = softmax((W1 * h) + (W2 * s))
     where h is the output of the encoder, s is the hidden previous state of the decoder,
     and W1 and W2 are trainable weight matrices.
-
     :param encoder_out: output of the encoder (batch_size, num_pixels, encoder_dim)
     :param decoder_hidden: previous hidden state of the decoder (batch_size, decoder_dim)
     :return: attention weighted encoding, weights (batch_size, encoder_dim), (batch_size, num_pixels)
@@ -68,6 +68,8 @@ class Attention(nn.Module):
         att2 = self.decoder_att(decoder_hidden)  # (batch_size, attention_dim)
         att = self.full_att(self.relu(att1 + att2.unsqueeze(1))).squeeze(2)  # (batch_size, num_pixels)
         alpha = self.softmax(att)  # (batch_size, num_pixels)
+        # element-wise multiplication of alpha and encoder_out to get thmoe attention weighted encoding
+        # which represents the context vector
         attention_weighted_encoding = (encoder_out * alpha.unsqueeze(2)).sum(dim=1)  # (batch_size, encoder_dim)
 
         return attention_weighted_encoding, alpha
@@ -125,6 +127,8 @@ class DecoderRNN(nn.Module):
         encoder_out = encoder_out.view(batch_size, -1, encoder_dim)  # flatten image
         num_pixels = encoder_out.size(1)  # get the number of pixels
 
+        # Sort input data by decreasing lengths to ensure that captions
+        # which have not yet reached their end will be processed first
         caption_lengths, sort_ind = caption_lengths.squeeze(1).sort(dim=0, descending=True)
         encoder_out = encoder_out[sort_ind]  # sort the encoded images
         encoded_captions = encoded_captions[sort_ind].type(torch.LongTensor).to(device)
@@ -136,7 +140,7 @@ class DecoderRNN(nn.Module):
         decode_lengths = (caption_lengths - 1).tolist()  # no decoding at the <end> position (last position)
         decode_lengths = [int(i) for i in decode_lengths]  # convert to int because of error in pytorch
 
-        # Create tensors to hold word prediciton scores and alphas
+        # Create tensors to hold word prediction scores and alphas
         predictions = torch.zeros(batch_size, max(decode_lengths), vocab_size).to(device)
         alphas = torch.zeros(batch_size, max(decode_lengths), num_pixels).to(device)
 
@@ -144,7 +148,8 @@ class DecoderRNN(nn.Module):
         # attention-weighing the encoder's output based on the decoder's previous hidden state output
         # then generate a new word in the decoder with the previous word and the attention weighted encoding
         for t in range(max(decode_lengths)):
-            batch_size_t = sum([l > t for l in decode_lengths])  # this is the batch size at time-step t
+            batch_size_t = sum([l > t for l in decode_lengths])  # these are the indices of the active batches
+            # i.e. those that have not reached the end of the caption, and up to which we have to decode
             attention_weighted_encoding, alpha = self.attention(encoder_out[:batch_size_t], h[:batch_size_t])
             gate = self.sigmoid(self.f_beta(h[:batch_size_t]))  # gating scalar, (batch_size_t, encoder_dim)
             attention_weighted_encoding = gate * attention_weighted_encoding  # (batch_size_t, encoder_dim)
@@ -152,9 +157,11 @@ class DecoderRNN(nn.Module):
                 torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),
                 (h[:batch_size_t], c[:batch_size_t])
             )
-            preds = self.fc(self.dropout(h))
+            preds = self.fc(self.dropout(h))  # this is the prediction for the next word (batch_size_t, vocab_size)
             predictions[:batch_size_t, t, :] = preds  # these are the predictions for the current time-step
+            # (batch_size_t, max(decode_lengths), vocab_size)
             alphas[:batch_size_t, t, :] = alpha  # these are the attention weights for the current time-step
+            # (batch_size_t, max(decode_lengths), num_pixels)
 
         return predictions, encoded_captions, decode_lengths, alphas, sort_ind
 
@@ -170,19 +177,21 @@ class DecoderRNN(nn.Module):
 
         with torch.no_grad():
 
+            # E.g. encoder size => torch.Size([22, 28, 28, 2048])
             enc_image_size = encoder_out.size(1)  # get the size of the encoded image
-            encoder_dim = encoder_out.size(3)  # get the number of features in the encoded image
+            # (W or H after adaptive average pooling, which is the same, 28 in this case)
+            encoder_dim = encoder_out.size(3)  # get the dimensionality of the encoded image (2048)
             vocab_size = self.vocab_size  # get the size of the vocabulary
 
             # Flatten image
             encoder_out = encoder_out.view(1, -1, encoder_dim)  # (1, num_pixels, encoder_dim)
             num_pixels = encoder_out.size(1)  # get the number of pixels
 
-            # We'll treat the problem as having a batch size of 1
-            encoder_out = encoder_out.expand(k, num_pixels, encoder_dim)
+            # We'll treat the problem as having a batch size of k
+            encoder_out = encoder_out.expand(k, num_pixels, encoder_dim)  # (k, num_pixels, encoder_dim)
 
             # Tensor to store top k previous words at each step; now they're just <start>
-            k_prev_words = torch.LongTensor([[data_loader.dataset.vocab('<start>')]] * k).to(device)
+            k_prev_words = torch.LongTensor([[data_loader.dataset.vocab('<start>')]] * k).to(device)  # (k, 1)
 
             # Tensor to store top k sequences; now they're just <start>
             seqs = k_prev_words  # (k, 1)
@@ -206,8 +215,6 @@ class DecoderRNN(nn.Module):
             # s is a number less than or equal to k, because sequences are removed from this process once they hit <end>
             while True:
 
-                torch.cuda.empty_cache()
-
                 embeddings = self.embedding(k_prev_words).squeeze(1)  # (s, embed_dim)
 
                 awe, alpha = self.attention(encoder_out, h)  # (s, encoder_dim), (s, num_pixels)
@@ -215,7 +222,7 @@ class DecoderRNN(nn.Module):
                 alpha = alpha.view(-1, enc_image_size, enc_image_size)  # (s, enc_image_size, enc_image_size)
 
                 gate = self.sigmoid(self.f_beta(h))  # gating scalar, (s, encoder_dim)
-                awe = gate * awe  # this is the attention weighted encoding
+                awe = gate * awe  # this is the attention weighted encoding  (s, encoder_dim)
 
                 h, c = self.decode_step(torch.cat([embeddings, awe], dim=1), (h, c))  # (s, decoder_dim)
 
@@ -233,12 +240,12 @@ class DecoderRNN(nn.Module):
                     top_k_scores, top_k_words = scores.view(-1).topk(k, 0, True, True)  # (s)
 
                 # Convert unrolled indices to actual indices of scores
-                prev_word_inds = top_k_words / vocab_size  # (s)
+                prev_word_inds = top_k_words // vocab_size  # (s)
                 next_word_inds = top_k_words % vocab_size  # (s)
 
                 # Add new words to sequences, alphas
-                seqs = torch.cat([seqs[prev_word_inds.long()], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1)
-                seqs_alpha = torch.cat([seqs_alpha[prev_word_inds.long()], alpha[prev_word_inds.long()].unsqueeze(1)],
+                seqs = torch.cat([seqs[prev_word_inds], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1)
+                seqs_alpha = torch.cat([seqs_alpha[prev_word_inds], alpha[prev_word_inds].unsqueeze(1)],
                                        dim=1)  # (s, step+1, enc_image_size, enc_image_size)
 
                 # Which sequences are incomplete (didn't reach <end>)?
@@ -258,9 +265,9 @@ class DecoderRNN(nn.Module):
                     break
                 seqs = seqs[incomplete_inds]  # (s, step+1)
                 seqs_alpha = seqs_alpha[incomplete_inds]  # (s, step+1, enc_image_size, enc_image_size)
-                h = h[prev_word_inds[incomplete_inds].long()]  # (s, decoder_dim)
-                c = c[prev_word_inds[incomplete_inds].long()]  # (s, decoder_dim)
-                encoder_out = encoder_out[prev_word_inds[incomplete_inds].long()]  # (s, num_pixels, encoder_dim)
+                h = h[prev_word_inds[incomplete_inds]]  # (s, decoder_dim)
+                c = c[prev_word_inds[incomplete_inds]]  # (s, decoder_dim)
+                encoder_out = encoder_out[prev_word_inds[incomplete_inds]]  # (s, num_pixels, encoder_dim)
                 top_k_scores = top_k_scores[incomplete_inds].unsqueeze(1)  # (s, 1)
                 k_prev_words = next_word_inds[incomplete_inds].unsqueeze(1)  # (s, 1)
 

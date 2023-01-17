@@ -55,7 +55,7 @@ def get_loader(transform, mode='train', batch_size=1, vocab_threshold=None, voca
 
     if mode == 'train':
         indices = dataset.get_train_indices()  # get indices for train/validation split
-        init_sampler = data.sampler.SubsetRandomSampler(indices=indices)  # define sampler for obtaining training batches
+        init_sampler = data.sampler.SubsetRandomSampler(indices=indices)  # sampler for obtaining training batches
         data_loader = data.DataLoader(dataset=dataset, num_workers=num_workers,  # create data loader
                                       batch_sampler=data.sampler.BatchSampler(sampler=init_sampler,
                                                                               batch_size=dataset.batch_size,
