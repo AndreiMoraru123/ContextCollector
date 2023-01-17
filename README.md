@@ -1,5 +1,9 @@
 # COCO Context Collector
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/81184255/209364439-61a2a2a2-61ef-461b-89fc-05883762133f.png">
+</p>
+
 ## It's a Contextualizer, trained on COCO! See what I did there?
 
 ### This mixed vision-language model gets better by making mistakes
@@ -42,7 +46,7 @@ Neural networks, while perhaps the truce between the two, as their application i
 
 The latest show in town, the Transformer architecture, has provided a great advancement into the world of language models, following the original paper [___Attention is All You Need___](https://arxiv.org/abs/1706.03762) that paved the way to models like [___GPT-3___](https://arxiv.org/abs/2005.14165), and while the success has not been completely transferred to vision, some breakthroughs have been made: [___An Image is Worth 16x16 Words___](https://arxiv.org/abs/2010.11929), [___SegFormer___](https://arxiv.org/abs/2105.15203), [___DINO___](https://arxiv.org/abs/2104.14294).
 
-One of the very newest (time of writing: fall 2022) is [Google's LM-Nav](https://sites.google.com/view/lmnav?pli=1), a Large Vision + Language model used for robotic navigation. What is thought provoking about this project is the ability of a combined V+L model to "understand" the world better than a V or L model would do on their own. Perhaps human intelligence itself is the sum of smaller combined intelligent models. The robot is presented with conflicting scenarios and is able to even "tell" if a prompt makes sense as a navigational instruction or is impossible to fulfil.
+One of the very newest (time of writing: fall 2022) is [___Google's LM-Nav___](https://sites.google.com/view/lmnav?pli=1), a Large Vision + Language model used for robotic navigation. What is thought provoking about this project is the ability of a combined V+L model to "understand" the world better than a V or L model would do on their own. Perhaps human intelligence itself is the sum of smaller combined intelligent models. The robot is presented with conflicting scenarios and is able to even "tell" if a prompt makes sense as a navigational instruction or is impossible to fulfil.
 
 ![p4](https://user-images.githubusercontent.com/81184255/203030436-eb2e37bd-6b83-45bc-84a6-a527c52bb765.gif)
 
@@ -54,7 +58,7 @@ For this particular model, I am concerned with detection and captioning.
 
 Before the ```CocoDataset``` can be created in the [cocodata.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/cocodata.py) file, a ```vocabulary``` instance of the ```Vocabulary``` class has to be constructed using the [vocabulary.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/vocabulary.py) file. This can be conveniently done using the ```tokenize``` function of of ```nltk``` module.
 
-The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash map structures (Python Dictionaries), ```word2idx``` and ```idx2word```.
+The Vocabulary is simply the collection of words that the model needs to learn. It also needs to convert said words into numbers, as the decoder can only process them as such. To be able to read the output of the model, they also need to be converted back. These two are done using two hash maps (dicts), ```word2idx``` and ```idx2word```.
 
 As per all sequence to sequence models, the vocab has to have a known ```<start>``` token, as well as an ```<end>``` one. An ```<unk>``` token for the unknown words, yet to be added to the file acts as a selector for what gets in. 
 
@@ -62,7 +66,7 @@ The vocabulary is, of course, built on the COCO annotations available for the im
 
 The important thing to know here is that each vocabulary generation can (and should) be customized. The instance will not simply add all the words that it can find in the annotations file, because a lot would be redundant. 
 
-For this reason, two vocabulary "hyper-parameters" can be tuned:
+For this reason, two vocabulary hyper-parameters can be tuned:
 
 ```python
 word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less than 6 times, it is discarded)
@@ -77,7 +81,56 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
-As found in the [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
+```math
+I \to  \text{Input ROI (region of interest)}
+```
+
+```math
+S = \{ S_0, S_1, ..., S_n \} \to \text{Target sequence of words}, \: S_i \in \mathbb{R}^{K} \\
+```
+
+```math
+\text{Where} \: K = \text{the size of the dictionary}
+```
+
+```math
+p(S | I) \to \text{likelihood}
+```
+
+The goal is to tweak the model's parameters in order to maximize the probability of a generated sequence being correct given a frame
+
+```math
+\theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
+```
+
+```math
+\log p(S|I) = \sum_{i=1}^{n} \underbrace{\log p(S_i|S_{1},\dots,S_{i-1},I)}_{\text{modeled with an RNN}}
+```
+
+Then the forward feed is as follows:
+
+```math
+x_{-1} = \text{CNN}(I)
+```
+
+```math
+x_t = \text{WeSt}, t \in \{0, \dots, N-1\}
+```
+
+```math
+p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
+```
+
+The expansion mechanism builts upon detection in the following way:
+
+```math
+\text{If } \forall S_i \neq \text{label} \text{ for any } i \in \{1, \dots, n\}, \text{ then } I = I + \phi \cdot I, \text{ where } 0 \leq \phi \leq 1 \text{ and } I \leq I + \phi \cdot I \leq I_{\max}
+```
+
+Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
+
+
+As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
 ### 1. [The CNN Encoder](#encoder)
 ### 2. [The Attention Network](#attention)
@@ -133,7 +186,7 @@ Additive attention is a model in and of itself, because it is in essence just a 
 
 # Decoder
 
-I am using pretty much the same decoder proposed in the greatly elaborated [Image Captioning repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) with some caveats. Precisely:
+I am using pretty much the same implementation proposed in the greatly elaborated [Image Captioning repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) with some caveats. Precisely:
 
 1. I do not use padded sequences for the captions
 2. I tailored tensor dimensions and types for a different pipeline (and dataset as well, the repo uses COCO 2014), so you may see differences
@@ -224,9 +277,9 @@ word_threshold = 6  #  the minimum number of apparitions for a word to be includ
 vocab_from_file = False  # if this is the first time of training / you do not have the pickle file,
                          # then you will have to generate the vocabulary first
                        
-# save_every = 1  # save every chosen epoch
+save_every = 1  # save every chosen epoch
 
-# print_every = 100  # log stats every chosen number of batches
+print_every = 100  # log stats every chosen number of batches
 ```
 
 The `loss` function is ```CrossEntropyLoss``` and should not be changed as this is the only one that makes sense. Captioning is just multi-label classifcation. 
