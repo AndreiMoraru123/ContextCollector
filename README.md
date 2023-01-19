@@ -6,8 +6,6 @@
 
 ## It's a Contextualizer, trained on COCO! See what I did there?
 
-Make sure to check the [unofficial, but original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) as well.
-
 ### This mixed vision-language model gets better by making mistakes
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
@@ -33,6 +31,8 @@ Frame goes in, caption comes out.
 <p align="center">
   <img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="500"/>
 </p>
+
+Make sure to check the [unofficial, but original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) as well.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
