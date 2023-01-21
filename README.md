@@ -361,7 +361,7 @@ Here is a comparison of how the model behaves using a beam width of `1` (i.e. gr
 
 ![k10](https://user-images.githubusercontent.com/81184255/213889325-859e6c9d-90bc-4cf4-a48c-5beedc761e1e.gif)
 
-You can definitely see that `k=1` achieves a higher FPS rate, but at the cost of accuracy, while the `k=10` beam is more accurate, but at a performance cost, as the k possibilities are held on the GPU. 
+You can definitely see that `k=1` achieves a higher FPS rate, but at the cost of accuracy, while the `k=10` beam is more accurate, but at a performance cost, as the `k` possibilities are held on the GPU. 
 
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
