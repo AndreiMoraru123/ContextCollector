@@ -199,7 +199,7 @@ As attention is going to be non-linear, this is why we activate the sum using  `
 
 Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.69641&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) that serves as a simplified exampled:
 
-![tfplay](https://user-images.githubusercontent.com/81184255/213886534-bd9f3d71-8681-4fe7-b3d2-a58ecfb1b6fd.gif)
+![tfplay](https://user-images.githubusercontent.com/81184255/213886882-39e8c27a-953f-4001-999d-204805361c39.gif)
 
 For the two features of the data, their `X` and `Y` coordinates, we can use `4` neurons to learn `4` lines, one line per neuron. This is what the projection of the `attention_dim` is doing. The final neuron can just learn a linear combination of the previous `4` in the hidden state. This is what the `full_att` layer is eesentially doing by mapping the `attention_dim` neurons to a single one. 
 
