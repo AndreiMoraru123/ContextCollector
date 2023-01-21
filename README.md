@@ -1,12 +1,14 @@
 # COCO Context Collector
 
+## Multimodal learning
+
 <p align="center">
 <img src="https://user-images.githubusercontent.com/81184255/209364439-61a2a2a2-61ef-461b-89fc-05883762133f.png">
 </p>
 
 ## It's a Contextualizer, trained on COCO! See what I did there?
 
-### This mixed multi-modal vision-language model gets better by making mistakes
+### This mixed vision-language model gets better by making mistakes
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
 
