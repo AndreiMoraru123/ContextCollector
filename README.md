@@ -207,7 +207,7 @@ Therefore, after getting the probability of each neuron to be attented to, we ca
 
 Here is a gif so you can find the concepts of the paper in code easier:
 
-![attention](https://user-images.githubusercontent.com/81184255/213886740-d652c5df-3bc5-4382-af87-b25affa66e3e.gif)
+![attention](https://user-images.githubusercontent.com/81184255/213887518-949cd8be-7c4a-49de-8942-2fd9881cc7cf.gif)
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
