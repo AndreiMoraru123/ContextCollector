@@ -175,7 +175,7 @@ Here is an interesting experiment on human perception conducted by [Corbetta & S
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
 acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
 
-The great gain of using attention as a mechanism in the decoder is that the importantce of the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space). Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the features by the model. The results are actually quite astounding when compared to an attention-less network (see previous project). 
+The great gain of using attention as a mechanism in the decoder is that the importantce of the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space). Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the features by the model. The results are actually quite astounding when compared to an attention-less network ([see previous project](https://github.com/AndreiMoraru123/Watch-and-Tell)). 
 
 ## Where?
 
