@@ -269,7 +269,7 @@ You may notice in the gif below that, during training, we are decoding every tim
 
 ![teacherforcing](https://user-images.githubusercontent.com/81184255/213887214-1361255e-8279-4a85-81a7-a436c8130210.gif)
 
-But there is a problem, this means that the model is going to memorize the captions by heart for each image, because the only sentence that minimizes the loss for a sentence word for word is going to be the exact same sentence. 
+But there is a problem, this means that the model is going to memorize the captions by heart for each image, because the only prediction that minimizes the loss word for word for a given caption is going to be the exact same sentence. 
 
 Then why are we doing this? Here is the fascinating part: the model is not learning semantics and compositionality during training, but you can notice it is learning the `alpha`-s, which means it will remember what each word is supposed to look like in an image representation. This is why we are not calling the `forward` function during inference, that would be useless. What the authors are doing instead is using a ___beam search___ algorithm to form sentences different from the training labels, and you can find that in the `sample` function. This is the function you would call during inference. 
 
