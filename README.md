@@ -163,9 +163,9 @@ You can check how `torchvision` can implement this below:
 
 Here is an interesting experiment conducted by [Corbetta & Shulman](https://pubmed.ncbi.nlm.nih.gov/11994752/) to go along with this paper:
 
-<img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 500/>
+<img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 250/>
 
-<img align = "right" src = "https://user-images.githubusercontent.com/81184255/213888522-12a7c3d3-280a-4c4e-aea5-a2b2ebf6b411.png" />
+<img align = "right" src = "https://user-images.githubusercontent.com/81184255/213888522-12a7c3d3-280a-4c4e-aea5-a2b2ebf6b411.png" widht = 250/>
 
 ## Why?
 
