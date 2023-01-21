@@ -527,6 +527,6 @@ Multi                      |           Purpose
 
 # Bloopers
 
-I think there is a big Ferrari right in the middle of this scene, and it should be the center of attention. Not sure though.
+I think there is a big Ferrari in the middle of this scene, and it should be the center of attention. Not sure though.
 
 ![blooper](https://user-images.githubusercontent.com/81184255/213890270-51940e50-97eb-4453-93ce-c53505edb77e.gif)
