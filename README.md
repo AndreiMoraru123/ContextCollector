@@ -1,6 +1,4 @@
-# COCO Context Collector
-
-## Multimodal learning
+# COCO Context Collector - Multimodal learning
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/81184255/209364439-61a2a2a2-61ef-461b-89fc-05883762133f.png">
