@@ -161,7 +161,7 @@ You can check how `torchvision` implements this below:
 
 # Attention
 
-Here is an interesting experiment conducted by [Corbetta & Shulman](https://pubmed.ncbi.nlm.nih.gov/11994752/) to go along with this paper:
+Here is an interesting experiment on human perception conducted by [Corbetta & Shulman](https://pubmed.ncbi.nlm.nih.gov/11994752/) to go along with this paper:
 
 <img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 415/>
 
