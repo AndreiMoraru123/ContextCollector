@@ -349,7 +349,7 @@ Again, keep in mind that, provided you have one, this search will also be transf
 
 That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
 
-I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
+I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of only one.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
