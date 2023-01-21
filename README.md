@@ -524,3 +524,7 @@ Multi                      |           Purpose
   copyright = {arXiv.org perpetual, non-exclusive license}
 }
 ```
+
+# Bloopers
+
+![blooper](https://user-images.githubusercontent.com/81184255/213890270-51940e50-97eb-4453-93ce-c53505edb77e.gif)
