@@ -32,7 +32,7 @@ Frame goes in, caption comes out.
   <img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="500"/>
 </p>
 
-Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
+## Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
@@ -131,7 +131,6 @@ The expansion mechanism builts upon detection in the following way:
 
 Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
 
-
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
 ### 1. [The CNN Encoder](#encoder)
@@ -153,6 +152,8 @@ The ```freeze_grad``` function is there if you need to tailor how many (if any) 
 The purpose of the resulting feature map is to provide a latent space representation of each frame, from which the decoder can draw multiple conclusions.
 
 Any ResNet architecture (any depth) will work here, as well as some of the other predating CNNs (the paper used VGG), but keep in mind memory constraints for inference.
+
+![image](https://user-images.githubusercontent.com/81184255/213886156-5b733756-4490-4398-9bab-5072039ca560.png)
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
