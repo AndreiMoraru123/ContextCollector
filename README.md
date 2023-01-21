@@ -355,7 +355,7 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
   <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
 </p>
 
-Here is a comparison of how the model behaves using a beam width of 1 (i.e. greedy search) vs one of 10:
+Here is a comparison of how the model behaves using a beam width of `1` (i.e. greedy search) vs one of `10`:
 
 ![k1](https://user-images.githubusercontent.com/81184255/213889320-25fd2ee0-a3c9-492e-a51c-29b66c02fb1e.gif)
 
