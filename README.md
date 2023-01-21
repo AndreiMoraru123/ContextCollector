@@ -153,6 +153,8 @@ The purpose of the resulting feature map is to provide a latent space representa
 
 Any ResNet architecture (any depth) will work here, as well as some of the other predating CNNs (the paper used VGG), but keep in mind memory constraints for inference.
 
+You can check how `torchvision` can implement this below:
+
 ![image](https://user-images.githubusercontent.com/81184255/213886156-5b733756-4490-4398-9bab-5072039ca560.png)
 
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
@@ -178,12 +180,34 @@ The original paper, as well as this implementation, use [___Additive / Bahdanau 
 The formula for the Bahdanau Attention is the essentially the following:
 
 ```python
-alpha = softmax((W1 * h) + (W2 * s))
+alpha = tanh((W1 * e) + (W2 * h))
 ```
 
-where ```h``` is the output of the encoder, ```s``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
+where ```e``` is the output of the encoder, ```h``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
 
 Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
+
+## But how does Attention actually work here?
+
+The paper itself cites Bahdanau, but does not go in depth on the reasoning behind this architecture. Here is how to make sense of it:
+
+The matrices ```W1``` and ```W2``` have the purpose to project the `encoder features` and the `hidden state` of the decoder into the same dimensionality so that it can add them. 
+
+Adding them element-wise means the model is forced to minimize the loss for the features of the image as well as it's captions, so it "must find" some connection between them.
+
+As attention is going to be non-linear, this is why we activate the sum using  `ReLU` or `tanh`. The result is going to be squeeze into a single neuron, than, once `softmax-ed` will hold the probability of each neuron bein worth "attending to". Notice that the features of the encoder are expressed in number of pixels, not `W` x `H`, as it was passed through a `view` before the `attention` call. 
+
+Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.69641&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) that serves as a simplified exampled:
+
+![tfplay](https://user-images.githubusercontent.com/81184255/213886534-bd9f3d71-8681-4fe7-b3d2-a58ecfb1b6fd.gif)
+
+For the two features of the data, their `X` and `Y` coordinates, we can use `4` neurons to learn `4` lines, one line per neuron. This is what the projection of the `attention_dim` is doing. The final neuron can just learn a linear combination of the previous `4` in the hidden state. This is what the `full_att` layer is eesentially doing by mapping the `attention_dim` neurons to a single one. 
+
+Therefore, after getting the probability of each neuron to be attented to, we can multiply these probabilities with the pixel values themselves, and sum across that dimension. This is going to result in a weighted sum, and now this is exactly the `context vector` the paper is talking about.
+
+Here is a gif so you can find the concepts of the paper in code easier:
+
+![attention](https://user-images.githubusercontent.com/81184255/213886740-d652c5df-3bc5-4382-af87-b25affa66e3e.gif)
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
