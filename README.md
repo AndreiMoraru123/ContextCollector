@@ -203,7 +203,7 @@ Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#a
 
 For the two features of the data, the `X` and `Y` coordinates, we can use `4` neurons to learn `4` lines, one line per neuron. This is what the projection of the `attention_dim` is doing. The final neuron can just learn a linear combination of the previous `4` in the hidden layer. This is what the `full_att` layer is eesentially doing by mapping the `attention_dim` neurons to a single one. 
 
-Therefore, after getting the probability of each neuron to be attented to, we can multiply these probabilities with the pixel values themselves, and sum across that dimension. This is going to result in a weighted sum, and now this is exactly the `context vector` the paper is talking about.
+Therefore, after getting the probability of each neuron to be attented to, we can multiply these probabilities with the pixel values themselves, and sum across that dimension. This is going to result in a weighted sum, and now this is exactly the ___context vector___ the paper is talking about.
 
 Here is a gif so you can find the concepts of the paper in code easier:
 
