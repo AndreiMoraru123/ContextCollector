@@ -165,7 +165,7 @@ Here is an interesting experiment conducted by [Corbetta & Shulman](https://pubm
 
 <img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 500/>
 
-<img align = "right" src = "https://user-images.githubusercontent.com/81184255/213888522-12a7c3d3-280a-4c4e-aea5-a2b2ebf6b411.png" widht = 250/>
+<img align = "right" src = "https://user-images.githubusercontent.com/81184255/213888679-6a705481-3bd5-4cbf-b788-98e895db747c.png" width = 450/>
 
 ## Why?
 
@@ -232,7 +232,6 @@ The main idea of the model workflow is that the Encoder is passing a "context" f
 The attention weighted encoding is gated through a sigmoid activation and the resulting values are added to the embedding of the previous word. This concatenation is then passed as the input to an ```LSTMCell```, along with the previous hidden state.
 
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
-
 
 ## The LSTM Cell
 
