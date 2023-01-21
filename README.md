@@ -153,7 +153,7 @@ The purpose of the resulting feature map is to provide a latent space representa
 
 Any ResNet architecture (any depth) will work here, as well as some of the other predating CNNs (the paper used VGG), but keep in mind memory constraints for inference.
 
-You can check how `torchvision` can implement this below:
+You can check how `torchvision` implements this below:
 
 ![image](https://user-images.githubusercontent.com/81184255/213886156-5b733756-4490-4398-9bab-5072039ca560.png)
 
