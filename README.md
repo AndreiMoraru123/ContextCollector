@@ -6,7 +6,7 @@
 
 ## It's a Contextualizer, trained on COCO! See what I did there?
 
-### This mixed vision-language model gets better by making mistakes
+### This mixed multi-modal vision-language model gets better by making mistakes
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
 
@@ -195,7 +195,7 @@ The matrices ```W1``` and ```W2``` have the purpose to project the `encoder feat
 
 Adding them element-wise means the model is forced to minimize the loss for the features of the image as well as it's captions, so it "must find" some connection between them.
 
-As attention is going to be non-linear, this is why we activate the sum using  `ReLU` or `tanh`. The result is going to be squeeze into a single neuron, than, once `softmax-ed` will hold the probability of each neuron bein worth "attending to". Notice that the features of the encoder are expressed in number of pixels, not `W` x `H`, as it was passed through a `view` before the `attention` call. This means that the single neuron computation is done for all the pixels in the `annotation vector`.
+As attention is going to be non-linear, this is why we activate the sum using  `ReLU` or `tanh`. The result is going to be squeeze into a single neuron, than, once `softmax`-ed will hold the probability of each neuron bein worth "attending to". Notice that the features of the encoder are expressed in number of pixels, not `W` x `H`, as it was passed through a `view` before the `attention` call. This means that the single neuron computation is done for all the pixels in the ___annotation vector___.
 
 Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.69641&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) that serves as a simplified exampled:
 
@@ -238,7 +238,7 @@ Concatenation in code will look like this:
 self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
 ```
 
-The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states.
+The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatenating the hidden an cell states. This is called a `joint embedding` architecture, because, well, you are smashing them both into the same vectorized world representation.
 
 
 ```python
@@ -252,7 +252,6 @@ The cell outputs a tuple made out of the next hidden and cell states like in the
   <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg" width = "500"/>
 </p>
 
-
 The intuition and computation behind the mechanism of the long short term memory unit are as follow:
 
 The cell operates with a ___long term memory___ and a ___short term___ one. As their names intuitively convey, the former is concerned with a more general sense of state, while the latter is concentrated around what it has just seen. 
@@ -263,6 +262,16 @@ In the picture up above as well as in this model, ```h``` represents the ___shor
 2. The short term memory will be joined by the ___input event___, ```x``` (which represents what the cell has just seen/experienced) in the ___input gate___, also called the ___learn gate___. This computation is done by gating both the input and the hidden state through an ___ignore gate___. The ignore factor of the gate is represented by a ```sigmoid``` to again ideally classify what has to be ignored [0] and what not [1]. How much is to be ignored is then decided by a ```tanh``` activation.
 3. The ___long term memory___ joined by the newly aquired information in the ___input gate___ is passed into the ___remember gate___ and it becomes the new ___cell state___ and the new ___long term memory___ of the LSTM. The operation is a point-by-point addition of the two.
 4. The ___output gate___ takes in all of the information from the input, hidden and cell state and becomes the new ___hidden state___ and ___short term memory___ of the network. The ___long term memory___ is passed through a ```tanh``` while the ___short term memory___ is passed through a ```sigmoid```, before being multiplied point-by-point in the final computation.
+
+## Teacher Forcing 
+
+You may notice in the gif below that, during training, we are decoding every time based on the `embeddings`, which are the training labels themselves, instead of using the `embeddings` only for the first computation and then sending in the output `predictions`, like they did in [Show and Tell](https://arxiv.org/pdf/1411.4555v2.pdf). This is called ___Teacher Forcing___, and you can imagine that it definitely speeds up the learning process:
+
+![teacherforcing](https://user-images.githubusercontent.com/81184255/213887214-1361255e-8279-4a85-81a7-a436c8130210.gif)
+
+But there is a problem, this means that the model is going to memorize the captions by heart for each image, because the only sentence that minimizes the loss for a sentence word for word is going to be the exact same sentence. 
+
+Then why are we doing this? Here is the fascinating part: the model is not learning semantics and compositionality during training, but you can notice it is learning the `alpha`-s, which means it will remember what each word is supposed to look like in an image representation. This is why we are not calling the `forward` function during inference, that would be useless. What the authors are doing instead is using a ___beam search___ algorithm to form sentences different from the training labels, and you can find that in the `sample` function. This is the function you would call during inference. 
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
