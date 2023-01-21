@@ -510,7 +510,7 @@ Multi                      |           Purpose
 
 </p> 
 
-#### Based on the original work:
+### Based on the original work:
 
 ```bibtex
 @misc{https://doi.org/10.48550/arxiv.1502.03044,
