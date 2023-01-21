@@ -355,6 +355,14 @@ I'll leave you with [this visual example](https://www.amazon.science/blog/amazon
   <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
 </p>
 
+Here is a comparison of how the model behaves using a beam width of 1 (i.e. greedy search) vs one of 10:
+
+![k1](https://user-images.githubusercontent.com/81184255/213889320-25fd2ee0-a3c9-492e-a51c-29b66c02fb1e.gif)
+
+![k10](https://user-images.githubusercontent.com/81184255/213889325-859e6c9d-90bc-4cf4-a48c-5beedc761e1e.gif)
+
+You can definitely see that `k=1` achieves a higher FPS rate, but at the cost of accuracy, while the `k=10` beam is more accurate, but at a performance cost, as the k possibilities are held on the GPU. 
+
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
 ## YOLO and the Perspective Expansion
