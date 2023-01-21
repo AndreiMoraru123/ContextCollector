@@ -163,7 +163,7 @@ You can check how `torchvision` implements this below:
 
 Here is an interesting experiment conducted by [Corbetta & Shulman](https://pubmed.ncbi.nlm.nih.gov/11994752/) to go along with this paper:
 
-<img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 420/>
+<img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 415/>
 
 <img align = "right" src = "https://user-images.githubusercontent.com/81184255/213888679-6a705481-3bd5-4cbf-b788-98e895db747c.png" width = 375/>
 
