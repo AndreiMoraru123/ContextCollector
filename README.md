@@ -205,7 +205,7 @@ Adding them element-wise means the model is forced to minimize the loss for the 
 
 As attention is going to be non-linear, this is why we activate the sum using  `ReLU` or `tanh`. The result is going to be squeeze into a single neuron, than, once `softmax`-ed will hold the probability of each neuron bein worth "attending to". Notice that the features of the encoder are expressed in number of pixels, not `W` x `H`, as it was passed through a `view` before the `attention` call. This means that the single neuron computation is done for all the pixels in the ___annotation vector___.
 
-Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.69641&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) that serves as a simplified exampled:
+Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.69641&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) that serves as a simplified example:
 
 ![tfplay](https://user-images.githubusercontent.com/81184255/213886882-39e8c27a-953f-4001-999d-204805361c39.gif)
 
