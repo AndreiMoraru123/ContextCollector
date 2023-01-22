@@ -526,6 +526,8 @@ Multi                      |           Purpose
 }
 ```
 
+### and [Repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning)
+
 # Bloopers
 
 I think there is a big Ferrari in the middle of this scene, and it should be the center of attention. Not sure though.
