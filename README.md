@@ -18,8 +18,6 @@ Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to s
 
 Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
 
-Built with PyTorch
-
 Explained in depth further down in this ```README```.
 
 [Click here to see some more examples](#some-more-examples)
