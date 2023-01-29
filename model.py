@@ -131,7 +131,7 @@ class DecoderRNN(nn.Module):
         # which have not yet reached their end will be processed first
         caption_lengths, sort_ind = caption_lengths.squeeze(1).sort(dim=0, descending=True)
         encoder_out = encoder_out[sort_ind]  # sort the encoded images
-        encoded_captions = encoded_captions[sort_ind].type(torch.LongTensor).to(device)
+        encoded_captions = encoded_captions[sort_ind].type(torch.LongTensor).to(device)  # (batch_size, max_caption_length)
 
         embeddings = self.embedding(encoded_captions)  # embeddings (batch_size, max_caption_length, embed_dim)
 
@@ -165,12 +165,11 @@ class DecoderRNN(nn.Module):
 
         return predictions, encoded_captions, decode_lengths, alphas, sort_ind
 
-    def sample(self, encoder_out, data_loader, k=10):
+    def sample(self, encoder_out, k=10):
 
         """
         Samples captions for given image features (Greedy search).
         :param encoder_out: the features extracted from the encoder
-        :param data_loader: the data loader in which the vocabulary is stored
         :param k: the number of samples taken into account for the beam search
         :return: A list of sampled captions for the given image features and their corresponding attention weights
         """
@@ -191,7 +190,8 @@ class DecoderRNN(nn.Module):
             encoder_out = encoder_out.expand(k, num_pixels, encoder_dim)  # (k, num_pixels, encoder_dim)
 
             # Tensor to store top k previous words at each step; now they're just <start>
-            k_prev_words = torch.LongTensor([[data_loader.dataset.vocab('<start>')]] * k).to(device)  # (k, 1)
+            # data_loader.dataset.vocab('<start>') == 0
+            k_prev_words = torch.LongTensor([[0]] * k).to(device)  # (k, 1)
 
             # Tensor to store top k sequences; now they're just <start>
             seqs = k_prev_words  # (k, 1)
@@ -250,7 +250,7 @@ class DecoderRNN(nn.Module):
 
                 # Which sequences are incomplete (didn't reach <end>)?
                 incomplete_inds = [ind for ind, next_word in enumerate(next_word_inds) if
-                                   next_word != data_loader.dataset.vocab('<end>')]
+                                   next_word != 1]  # data_loader.dataset.vocab('<end>') == 1
                 complete_inds = list(set(range(len(next_word_inds))) - set(incomplete_inds))
 
                 # Set aside complete sequences

@@ -147,7 +147,7 @@ def draw_prediction(img, class_id, x, y, x_plus_w, y_plus_h, colors, classes, k)
             roi = roi.to(device)
 
             features = encoder(roi)
-            seq, _ = decoder.sample(features, data_loader, k=k)
+            seq, _ = decoder.sample(features, k=k)
 
             sentence = clean_sentence(seq)
 
