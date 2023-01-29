@@ -1,4 +1,7 @@
-# COCO Context Collector
+# COCO Context Collector - Multimodal Learning
+
+![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)  ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white) ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?style=for-the-badge&logo=cmake&logoColor=white) ![Visual Studio](https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white) 
+![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green) ![nVIDIA](https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white)
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/81184255/209364439-61a2a2a2-61ef-461b-89fc-05883762133f.png">
@@ -16,8 +19,6 @@ Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to s
 
 Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
 
-Built with PyTorch
-
 Explained in depth further down in this ```README```.
 
 [Click here to see some more examples](#some-more-examples)
@@ -31,6 +32,8 @@ Frame goes in, caption comes out.
 <p align="center">
   <img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="500"/>
 </p>
+
+#### Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
@@ -129,7 +132,6 @@ The expansion mechanism builts upon detection in the following way:
 
 Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
 
-
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
 
 ### 1. [The CNN Encoder](#encoder)
@@ -152,9 +154,21 @@ The purpose of the resulting feature map is to provide a latent space representa
 
 Any ResNet architecture (any depth) will work here, as well as some of the other predating CNNs (the paper used VGG), but keep in mind memory constraints for inference.
 
+You can check how `torchvision` implements this below:
+
+![image](https://user-images.githubusercontent.com/81184255/213886156-5b733756-4490-4398-9bab-5072039ca560.png)
+
 ![p6](https://user-images.githubusercontent.com/81184255/203031528-ef8f6f19-f370-4372-9876-ce70f0e45731.gif)
 
 # Attention
+
+Here is an interesting experiment on human perception conducted by [Corbetta & Shulman](https://pubmed.ncbi.nlm.nih.gov/11994752/) to go along with this:
+
+<img align = "left" src = "https://user-images.githubusercontent.com/81184255/213888338-a22b14bd-87c3-47ef-ac3e-fa9586d76650.png" width = 415/>
+
+<img align = "right" src = "https://user-images.githubusercontent.com/81184255/213888679-6a705481-3bd5-4cbf-b788-98e895db747c.png" width = 375/>
+
+&emsp;
 
 ## Why?
 
@@ -162,7 +176,7 @@ Any ResNet architecture (any depth) will work here, as well as some of the other
 in its entirety at once. Instead humans focus attention selectively on parts of the visual space to
 acquire information when and where it is needed" -- <cite>[___Recurrent Models of Visual Attention___](https://arxiv.org/abs/1406.6247) </cite>
 
-The great gain of using attention as a mechanism in the decoder is that the importantce of the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space). Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the features by the model. The results are actually quite astounding when compared to an attention-less network (see previous project). 
+The great gain of using attention as a mechanism in the decoder is that the importantce of the information contained in the encoded latent space is held into account and weighted (as in across all pixels of the latent space). Namely, the attention lifts the burden of having a single dominant state taking guesses about what is the context of information taken from the features by the model. The results are actually quite astounding when compared to an attention-less network ([see previous project](https://github.com/AndreiMoraru123/Watch-and-Tell)). 
 
 ## Where?
 
@@ -175,12 +189,35 @@ The original paper, as well as this implementation, use [___Additive / Bahdanau 
 The formula for the Bahdanau Attention is the essentially the following:
 
 ```python
-alpha = softmax((W1 * h) + (W2 * s))
+alpha = tanh((W1 * e) + (W2 * h))
 ```
 
-where ```h``` is the output of the encoder, ```s``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
+where ```e``` is the output of the encoder, ```h``` is the hidden previous state of the decoder, and ```W1``` and ```W2``` are trainable weight matrices, producing a single number. (Note that the original paper also used ```tanh``` as a preactivation before ```softmax```. This implementation instead uses ```ReLU```.
 
 Additive attention is a model in and of itself, because it is in essence just a feed forward neural network. This is why it is built as an ```nn.Module``` class and inherits a forward call.
+
+## But how does Attention actually work here?
+
+The paper itself cites Bahdanau, but does not go in depth on the reasoning behind this architecture. Here is how to make sense of it:
+
+The matrices ```W1``` and ```W2``` have the purpose to project the `encoder features` and the `hidden state` of the decoder into the same dimensionality so that it can add them. 
+
+Adding them element-wise means the model is forced to minimize the loss for the features of the image as well as it's captions, so it "must find" some connection between them.
+
+As attention is going to be non-linear, this is why we activate the sum using  `ReLU` or `tanh`. The result is going to be squeeze into a single neuron, than, once `softmax`-ed will hold the probability of each neuron bein worth "attending to". Notice that the features of the encoder are expressed in number of pixels, not `W` x `H`, as it was passed through a `view` before the `attention` call. This means that the single neuron computation is done for all the pixels in the ___annotation vector___.
+
+Below is a gif from [TensorFlow playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.69641&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false) that serves as a simplified example:
+
+![tfplay](https://user-images.githubusercontent.com/81184255/213886882-39e8c27a-953f-4001-999d-204805361c39.gif)
+
+For the two features of the data, the `X` and `Y` coordinates, we can use `4` neurons to learn `4` lines, one line per neuron. This is what the projection of the `attention_dim` is doing. The final neuron can just learn a linear combination of the previous `4` in the hidden layer. This is what the `full_att` layer is esentially doing by mapping the `attention_dim` neurons to a single one. 
+
+Therefore, after getting the probability of each neuron to be attented to, we can multiply these probabilities with the pixel values themselves, and sum across that dimension. This is going to result in a weighted sum, and now this is exactly the ___context vector___ the paper is talking about. (When you sum across a dimension, say `196` for the number of pixels, you lose that dimension as it becomes `1`, this is how the vectors are turned into a single vector, which can then be passed to the 
+LSTM for computation)
+
+Here is a gif so you can find the concepts of the paper in code easier:
+
+![attention](https://user-images.githubusercontent.com/81184255/213887518-949cd8be-7c4a-49de-8942-2fd9881cc7cf.gif)
 
 ![p7](https://user-images.githubusercontent.com/81184255/203031544-2e57b5fd-44fd-4dc8-91c2-526ff7bc63da.gif)
 
@@ -200,7 +237,6 @@ The attention weighted encoding is gated through a sigmoid activation and the re
 
 ![p8](https://user-images.githubusercontent.com/81184255/203031558-6a519ad9-dd08-4fcf-ad0d-adf99c4c9740.gif)
 
-
 ## The LSTM Cell
 
 The embedded image captions are concatenated with gated attention encodings and passed as the input of the LSTMCell. If this were an attentionless mechanism, you would just pass the encoded features added to the embeddings. 
@@ -211,7 +247,7 @@ Concatenation in code will look like this:
 self.lstm = nn.LSTMCell(embeddings_size + encoded_features_size, decoded_hidden_size)  
 ```
 
-The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatennating the hidden an cell states.
+The decoded dimension, i.e. the hidden size of the LSTMCell is obtained by concatenating the hidden an cell states. This is called a `joint embedding` architecture, because, well, you are smashing them both into the same vectorized world representation.
 
 
 ```python
@@ -225,7 +261,6 @@ The cell outputs a tuple made out of the next hidden and cell states like in the
   <img src="https://user-images.githubusercontent.com/81184255/203302465-854077bf-ec2a-4cf7-9eaa-4f3621cf4d85.jpg" width = "500"/>
 </p>
 
-
 The intuition and computation behind the mechanism of the long short term memory unit are as follow:
 
 The cell operates with a ___long term memory___ and a ___short term___ one. As their names intuitively convey, the former is concerned with a more general sense of state, while the latter is concentrated around what it has just seen. 
@@ -236,6 +271,16 @@ In the picture up above as well as in this model, ```h``` represents the ___shor
 2. The short term memory will be joined by the ___input event___, ```x``` (which represents what the cell has just seen/experienced) in the ___input gate___, also called the ___learn gate___. This computation is done by gating both the input and the hidden state through an ___ignore gate___. The ignore factor of the gate is represented by a ```sigmoid``` to again ideally classify what has to be ignored [0] and what not [1]. How much is to be ignored is then decided by a ```tanh``` activation.
 3. The ___long term memory___ joined by the newly aquired information in the ___input gate___ is passed into the ___remember gate___ and it becomes the new ___cell state___ and the new ___long term memory___ of the LSTM. The operation is a point-by-point addition of the two.
 4. The ___output gate___ takes in all of the information from the input, hidden and cell state and becomes the new ___hidden state___ and ___short term memory___ of the network. The ___long term memory___ is passed through a ```tanh``` while the ___short term memory___ is passed through a ```sigmoid```, before being multiplied point-by-point in the final computation.
+
+## Teacher Forcing 
+
+You may notice in the gif below that, during training, we are decoding every time based on the `embeddings`, which are the training labels themselves, instead of using the `embeddings` only for the first computation and then sending in the output `predictions`, like they did in [Show and Tell](https://arxiv.org/pdf/1411.4555v2.pdf). This is called ___Teacher Forcing___, and you can imagine that it definitely speeds up the learning process:
+
+![teacherforcing](https://user-images.githubusercontent.com/81184255/213887214-1361255e-8279-4a85-81a7-a436c8130210.gif)
+
+Now we have a new problem. What this means is that the model is going to memorize the captions by heart for each image, because the only prediction that minimizes the loss word for word for a given caption is going to be the exact same sentence. 
+
+Then why are we doing this? Here is the fascinating part: the model is not learning semantics and compositionality during training, but you can notice it is learning the `alphas`, which means it will remember what each word is supposed to look like in an image representation. This is why we are not calling the `forward` function during inference, that would be useless. What the authors are doing instead is using a ___beam search___ algorithm to form sentences different from the training labels, and you can find that in the `sample` function. This is the function you would call during inference. 
 
 ![p9](https://user-images.githubusercontent.com/81184255/203031581-b1dfb252-80af-438c-8353-04e04e649ed4.gif)
 
@@ -306,11 +351,19 @@ Again, keep in mind that, provided you have one, this search will also be transf
 
 That means you may sometimes be forced to either use a greedy search, or break the sentences before they finish.
 
-I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of choosing only one.
+I'll leave you with [this visual example](https://www.amazon.science/blog/amazon-open-sources-library-for-prediction-over-large-output-spaces) on how beam search can select two nodes in a graph instead of only one.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/81184255/203261229-23030756-3b04-45cb-953e-dc819977961c.gif" width = "500"/>
 </p>
+
+Here is a comparison of how the model behaves using a beam width of `1` (i.e. greedy search) vs one of `10`:
+
+![k1](https://user-images.githubusercontent.com/81184255/213889320-25fd2ee0-a3c9-492e-a51c-29b66c02fb1e.gif)
+
+![k10](https://user-images.githubusercontent.com/81184255/213889325-859e6c9d-90bc-4cf4-a48c-5beedc761e1e.gif)
+
+You can definitely see that `k=1` achieves a higher FPS rate, but at the cost of accuracy, while the `k=10` beam is more accurate, but at a performance cost, as the `k` possibilities are held on the GPU. 
 
 ![p11](https://user-images.githubusercontent.com/81184255/203032112-6fd1cef8-1768-4ea8-af16-068e89c3a302.gif)
 
@@ -459,7 +512,7 @@ Multi                      |           Purpose
 
 </p> 
 
-Based on the original paper:
+### Based on the original work:
 
 ```bibtex
 @misc{https://doi.org/10.48550/arxiv.1502.03044,
@@ -473,3 +526,11 @@ Based on the original paper:
   copyright = {arXiv.org perpetual, non-exclusive license}
 }
 ```
+
+### and [Repo](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning)
+
+# Bloopers
+
+I think there is a big Ferrari in the middle of this scene, and it should be the center of attention. Not sure though.
+
+![blooper](https://user-images.githubusercontent.com/81184255/213890270-51940e50-97eb-4453-93ce-c53505edb77e.gif)
