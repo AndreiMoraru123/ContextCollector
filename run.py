@@ -138,7 +138,7 @@ if __name__ == '__main__':
     print("Device: ", device)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--video", type=str, default="videos/motorbikes.mp4", help="path to video file")
+    parser.add_argument("--video", type=str, default="videos/cow.mp4", help="path to video file")
     parser.add_argument("--expand", type=float, default=0.05, help="pyramid image expanding factor")
     parser.add_argument("--backend", type=str, default="cuda", help="backend to use (cuda or cpu)")
     parser.add_argument("--k", type=int, default=5, help="number of hypotheses held in the beam")

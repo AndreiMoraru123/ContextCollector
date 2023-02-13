@@ -47,12 +47,16 @@ class EncoderCNN(nn.Module):
 class Attention(nn.Module):
 
     """
-    Attention equation: alpha = softmax((W1 * h) + (W2 * s))
-    where h is the output of the encoder, s is the hidden previous state of the decoder,
-    and W1 and W2 are trainable weight matrices.
-    :param encoder_out: output of the encoder (batch_size, num_pixels, encoder_dim)
-    :param decoder_hidden: previous hidden state of the decoder (batch_size, decoder_dim)
-    :return: attention weighted encoding, weights (batch_size, encoder_dim), (batch_size, num_pixels)
+    Attention equation: alpha = softmax((W1 * encoder_out) + (W2 * decoder_hidden))
+    where W1 and W2 are learnable parameters and encoder_out and decoder_hidden
+    are the outputs of the encoder and decoder respectively.
+
+    The network basically learns to pay "attention" to the relevant parts of the image that
+    also align with the relevant parts of the caption. The output of the attention network
+    is a weighted sum of the encoder's output, where the weights are the values of alpha.
+
+    The alignment here means a simple dot product between
+    the encoder's output and the decoder's output.
     """
 
     def __init__(self, encoder_dim, decoder_dim, attention_dim):
@@ -68,7 +72,7 @@ class Attention(nn.Module):
         att2 = self.decoder_att(decoder_hidden)  # (batch_size, attention_dim)
         att = self.full_att(self.relu(att1 + att2.unsqueeze(1))).squeeze(2)  # (batch_size, num_pixels)
         alpha = self.softmax(att)  # (batch_size, num_pixels)
-        # element-wise multiplication of alpha and encoder_out to get thmoe attention weighted encoding
+        # element-wise multiplication of alpha and encoder_out to get the attention weighted encoding
         # which represents the context vector
         attention_weighted_encoding = (encoder_out * alpha.unsqueeze(2)).sum(dim=1)  # (batch_size, encoder_dim)
 
@@ -84,7 +88,7 @@ class DecoderRNN(nn.Module):
     :param decoder_dim: The dimension of the decoder LSTM.
     :param vocab_size: The size of the vocabulary.
     :param encoder_dim: The dimension of the encoder.
-    :param dropout: The dropout rate.
+    :param dropout: The dropout probability.
     :return: A LSTM decoder.
     """
 
@@ -131,7 +135,8 @@ class DecoderRNN(nn.Module):
         # which have not yet reached their end will be processed first
         caption_lengths, sort_ind = caption_lengths.squeeze(1).sort(dim=0, descending=True)
         encoder_out = encoder_out[sort_ind]  # sort the encoded images
-        encoded_captions = encoded_captions[sort_ind].type(torch.LongTensor).to(device)  # (batch_size, max_caption_length)
+        encoded_captions = encoded_captions[sort_ind].type(torch.LongTensor).to(device)
+        # (batch_size, max_caption_length)
 
         embeddings = self.embedding(encoded_captions)  # embeddings (batch_size, max_caption_length, embed_dim)
 
@@ -156,7 +161,7 @@ class DecoderRNN(nn.Module):
             h, c = self.decode_step(
                 torch.cat([embeddings[:batch_size_t, t, :], attention_weighted_encoding], dim=1),
                 (h[:batch_size_t], c[:batch_size_t])
-            )
+            )  # (batch_size_t, decoder_dim)
             preds = self.fc(self.dropout(h))  # this is the prediction for the next word (batch_size_t, vocab_size)
             predictions[:batch_size_t, t, :] = preds  # these are the predictions for the current time-step
             # (batch_size_t, max(decode_lengths), vocab_size)

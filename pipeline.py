@@ -1,6 +1,3 @@
-import torchvision
-from torch.utils.mobile_optimizer import optimize_for_mobile
-
 from model import EncoderCNN, DecoderRNN, device
 from torch.backends import cudnn
 from cocodata import get_loader
@@ -36,13 +33,19 @@ if use_fbgemm:
     torch.backends.quantized.engine = 'fbgemm'
 
 else:
-    quantization_config = torch.quantization.default_qconfig
+    quantization_config = torch.quantization.get_default_qconfig('qnnpack')
     torch.backends.quantized.engine = 'qnnpack'
 
+quantization_config.quant_min = 0.0
+quantization_config.quant_max = 1.0
 encoder.qconfig = quantization_config
 
 torch.quantization.prepare(encoder, inplace=True)
-torch.quantization.convert(encoder, inplace=True)
+torch.quantization.convert(encoder, inplace=True,
+                           convert_custom_config_dict={'_custom_module_class':
+                                                           {'EncoderCNN': encoder.qconfig}
+                                                       }
+                           )
 
 transform_test = transforms.Compose([
     transforms.Resize((224, 224)),
