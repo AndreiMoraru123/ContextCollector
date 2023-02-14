@@ -183,7 +183,7 @@ awe = f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] \quad\text{(attentio
 ```
 
 ```math
-\quad\text{(achieves a weighted average vector when summed up across the resolution dimensionality)}
+\quad\text{(achieves a weighted sum vector when added up across the pixels' dimensionality)}
 ```
 
 ```math
