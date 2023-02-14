@@ -133,11 +133,31 @@ p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 The attention itself is the alignment between the encoder's output (vision) and the decoder hidden state (language):
 
 ```math
-e_t = f_{\text{att}}(a, h_{t-1}) \quad\text{(glorified dot product)}
+e_t = f_{\text{att}}(a, h_{t-1}) \quad\text{(a miniature neural networks with a non-linear activation of two linear combinations)}
 ```
 
 ```math
-h_{t-1} = \text{hidden state}
+h_{t-1} = \text{hidden state} \quad\text{ and} \quad a = \text{annotation vectors}
+```
+
+```math
+$$a = {a_1, a_2, ..., a_L} \in \mathbb{R}^D \quad (D = 2048, L = 28 \times 28)$$
+```
+
+```math
+\text{In this equation, $a$ represents the output feature map of the encoder, which is a collection of $L$ activations}
+```
+
+```math
+\text{Each activation $a_i$ corresponds to a pixel in the input image, and is a vector of dimension $D=2048$} 
+```
+
+```math
+\text{obtained by projecting the pixel features into a high-dimensional space.}
+```
+
+```math
+\text{Collectively, the feature map $a$ captures information about the contents of the input image and is used as a basis for computing the attention weights.}
 ```
 
 ```math
