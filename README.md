@@ -84,6 +84,10 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 
 ## Model description
 
+### 1. [The CNN Encoder](#encoder)
+### 2. [The Attention Network](#attention)
+### 3. [The RNN Decoder](#decoder)
+
 ```math
 I \to  \text{Input ROI (region of interest)}
 ```
@@ -193,10 +197,6 @@ The expansion mechanism builts upon detection in the following way:
 Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
-
-### 1. [The CNN Encoder](#encoder)
-### 2. [The Attention Network](#attention)
-### 3. [The RNN Decoder](#decoder)
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
 
