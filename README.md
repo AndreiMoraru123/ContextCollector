@@ -121,7 +121,7 @@ x_{-1} = \text{CNN}(I)
 The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using attention.
 
 ```math
-x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector (encoder output + decoder hidden state)}
+x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector}
 ```
 
 The model produces the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until reaching the `<end>` token.
@@ -133,16 +133,35 @@ p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 The attention itself is a joint alignment between the encoder (vision) and the decoder (language):
 
 ```math
-\begin{aligned}
-e_t &= f_{\text{att}}(a, h_{t-1}) \quad\text{(glorified dot product)} \\
-h_{t-1} &= \text{hidden state} \\
-\alpha_{t,i} &= \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} \quad\text{(probabilities of each pixel being attended to)} \\
-&\quad\text{(results in the instance segmentation-like effect seen in the paper)} \\
-awe &= f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] \quad\text{(attention weighted encoding)} \\
-&\quad\text{(element-wise multiplication of each pixel and its probability)} \\
-&\quad\text{(achieves a ponderated vector when summed up across the resolution dimensionality)} \\
-\beta &= \sigma(f_b(h_{t-1})) \quad\text{(gating scalar used in the paper to achieve better results)}
-\end{aligned}
+e_t = f_{\text{att}}(a, h_{t-1}) \quad\text{(glorified dot product)}
+```
+
+```math
+h_{t-1} = \text{hidden state}
+```
+
+```math
+\alpha_{t,i} = \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} \quad\text{(probabilities of each pixel being attended to)}
+```
+
+```math
+\quad\text{(results in the instance segmentation-like effect seen in the paper)}
+```
+
+```math
+awe = f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] \quad\text{(attention weighted encoding)}
+```
+
+```math
+\quad\text{(element-wise multiplication of each pixel and its probability)}
+```
+
+```math
+\quad\text{(achieves a ponderated vector when summed up across the resolution dimensionality)}
+```
+
+```math
+\beta = \sigma(f_b(h_{t-1})) \quad\text{(gating scalar used in the paper to achieve better results)}
 ```
 
 The expansion mechanism builts upon detection in the following way:
