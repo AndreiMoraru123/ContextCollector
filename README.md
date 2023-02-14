@@ -157,7 +157,7 @@ $$a = {a_1, a_2, ..., a_L} \in \mathbb{R}^D \quad (D = 2048, L = 28 \times 28)$$
 ```
 
 ```math
-\text{Collectively, the feature map $a$ captures information about the contents of the input image and is used as a basis for computing the attention weights.}
+\text{Collectively, the feature map $a$ captures information about the contents of the input image}
 ```
 
 ```math
