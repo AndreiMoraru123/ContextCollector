@@ -112,16 +112,34 @@ The goal is to tweak the model's parameters in order to maximize the probability
 
 Then the forward feed is as follows:
 
+1. The image is first (and only once) encoded into the annotation vectors
+
 ```math
 x_{-1} = \text{CNN}(I)
 ```
 
+The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using attention.
+
 ```math
-x_t = \text{WeSt}, t \in \{0, \dots, N-1\}
+x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector (encoder output + decoder hidden state)}
 ```
+
+The model produces the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until reaching the `<end>` token.
 
 ```math
 p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
+```
+
+The attention itself is a joint alignment between the encoder (vision) and the decoder (language):
+
+```math
+\begin{align}
+e_t &= f_{\text{att}}(a, h_{t-1}) \to  \text{ glorified dot product} \
+h_{t-1} &= \text{hidden state} \
+\alpha_{t,i} &= \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})}  \to \text { probabilities of each pixel worth being attented to, resulting in the instance segmentation like effect that you see in the paper} \
+awe &= f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] \to \text{ the attention weighted encoding is the element-wise multiplication of each pixel and its probability, achieving essentially a ponderated vector when all pixels are summed up across that resolution dimensionality} \
+\text{where } \beta &= \sigma(f_b(h_{t-1})) \to \text{ this is a gating scalar they used in the paper to achieve better results}
+\end{align}
 ```
 
 The expansion mechanism builts upon detection in the following way:
