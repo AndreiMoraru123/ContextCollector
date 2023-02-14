@@ -130,7 +130,7 @@ x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding 
 p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 ```
 
-The attention itself is a joint alignment between the encoder's output (vision) and the decoder hidden state (language):
+The attention itself is the alignment between the encoder's output (vision) and the decoder hidden state (language):
 
 ```math
 e_t = f_{\text{att}}(a, h_{t-1}) \quad\text{(glorified dot product)}
