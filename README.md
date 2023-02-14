@@ -133,16 +133,16 @@ p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 The attention itself is a joint alignment between the encoder (vision) and the decoder (language):
 
 ```math
-\begin{align*}
-e_t &= f_{\text{att}}(a, h_{t-1}) &&\text{(glorified dot product)} \\
+\begin{aligned}
+e_t &= f_{\text{att}}(a, h_{t-1}) \quad\text{(glorified dot product)} \\
 h_{t-1} &= \text{hidden state} \\
-\alpha_{t,i} &= \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} &&\text{(probabilities of each pixel being attended to)} \\
-&\text{(results in the instance segmentation-like effect seen in the paper)} \\
-awe &= f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] &&\text{(attention weighted encoding)} \\
-&\text{(element-wise multiplication of each pixel and its probability} \\
-&\text{(achieves a ponderated vector when summed up across the resolution dimensionality)} \\
-\text{where } \beta &= \sigma(f_b(h_{t-1})) &&\text{(gating scalar used in the paper to achieve better results)}
-\end{align*}
+\alpha_{t,i} &= \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} \quad\text{(probabilities of each pixel being attended to)} \\
+&\quad\text{(results in the instance segmentation-like effect seen in the paper)} \\
+awe &= f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] \quad\text{(attention weighted encoding)} \\
+&\quad\text{(element-wise multiplication of each pixel and its probability)} \\
+&\quad\text{(achieves a ponderated vector when summed up across the resolution dimensionality)} \\
+\beta &= \sigma(f_b(h_{t-1})) \quad\text{(gating scalar used in the paper to achieve better results)}
+\end{aligned}
 ```
 
 The expansion mechanism builts upon detection in the following way:
