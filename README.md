@@ -118,19 +118,19 @@ Then the forward feed is as follows:
 x_{-1} = \text{CNN}(I)
 ```
 
-The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using attention.
+2. The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using attention.
 
 ```math
 x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector}
 ```
 
-The model produces the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until reaching the `<end>` token.
+3. The model produces the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until reaching the `<end>` token.
 
 ```math
 p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
 ```
 
-The attention itself is a joint alignment between the encoder (vision) and the decoder (language):
+The attention itself is a joint alignment between the encoder's output (vision) and the decoder hidden state (language):
 
 ```math
 e_t = f_{\text{att}}(a, h_{t-1}) \quad\text{(glorified dot product)}
