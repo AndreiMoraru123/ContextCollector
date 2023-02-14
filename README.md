@@ -104,7 +104,9 @@ S = \{ S_0, S_1, ..., S_n \} \to \text{Target sequence of words}, \: S_i \in \ma
 p(S | I) \to \text{likelihood}
 ```
 
-The goal is to tweak the model's parameters in order to maximize the probability of a generated sequence being correct given a frame
+```math
+\text{The goal is to tweak the model's parameters in order to maximize the probability of a generated sequence being correct given a frame}
+```
 
 ```math
 \theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
@@ -122,7 +124,7 @@ Then the forward feed is as follows:
 x_{-1} = \text{CNN}(I)
 ```
 
-2. The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using attention.
+2. The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using Bahdanau alignments.
 
 ```math
 x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector}
