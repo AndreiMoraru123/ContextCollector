@@ -72,7 +72,7 @@ The important thing to know here is that each vocabulary generation can (and sho
 For this reason, two vocabulary hyper-parameters can be tuned:
 
 ```python
-word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less than 6 times, it is discarded)
+word_threshold = 6  # minimum word count threshold (if a word occurs less than 6 times, it is discarded)
 vocab_from_file = False  # if True, load existing vocab file. If False, create vocab file from scratch
 ```
 
