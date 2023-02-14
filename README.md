@@ -105,7 +105,7 @@ p(S | I) \to \text{likelihood}
 ```
 
 ```math
-\text{The goal is to tweak the parameters in order to max out the probability of a generated sequence being correct given a frame}
+\text{The goal is to tweak the parameters in order to max the probability of a generated sequence being correct given a frame}
 ```
 
 ```math
