@@ -167,7 +167,7 @@ $$a = {a_1, a_2, ..., a_L} \in \mathbb{R}^D \quad (D = 2048, L = 28 \times 28)$$
 ```
 
 ```math
-\alpha_{t,i} = \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} \quad\text{(probabilities of each pixel being attended to)}
+\alpha_{t,i} = \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} \quad\text{(probabilities of each pixel worth being attended to)}
 ```
 
 ```math
