@@ -130,7 +130,7 @@ x_{-1} = \text{CNN}(I)
 x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector}
 ```
 
-3. The model produces the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until reaching the `<end>` token.
+3. The model outputs the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until it reaches the `<end>` token.
 
 ```math
 p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
