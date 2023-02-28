@@ -33,7 +33,8 @@ Frame goes in, caption comes out.
   <img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="500"/>
 </p>
 
-#### Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
+> **Note**
+> Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
