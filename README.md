@@ -13,7 +13,7 @@
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
 
-## Trained on [COCO](https://cocodataset.org/#home) (50 GB, 2017 challenge)
+### Trained on [COCO](https://cocodataset.org/#home) (50 GB, 2017 challenge)
 
 ```bash
 %%bash
