@@ -13,13 +13,53 @@
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
 
-This is the improved version of the original [Watch&Tell project](https://github.com/AndreiMoraru123/Watch-and-Tell). 
+## Trained on [COCO](https://cocodataset.org/#home) (50 GB, 2017 challenge)
 
-Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to see what was improved and how to deal with the [Microsoft COCO dataset](https://cocodataset.org/#home).
+```bash
+%%bash
 
-Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
+mkdir coco
+cd coco
+mkdir images
+cd images
 
-Explained in depth further down in this ```README```.
+wget -c http://images.cocodataset.org/zips/train2017.zip
+wget -c http://images.cocodataset.org/zips/val2017.zip
+wget -c http://images.cocodataset.org/zips/test2017.zip
+wget -c http://images.cocodataset.org/zips/unlabeled2017.zip
+
+unzip train2017.zip
+unzip val2017.zip
+unzip test2017.zip
+unzip unlabeled2017.zip
+
+rm train2017.zip
+rm val2017.zip
+rm test2017.zip
+rm unlabeled2017.zip
+
+cd ../
+wget -c http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+wget -c http://images.cocodataset.org/annotations/stuff_annotations_trainval2017.zip
+wget -c http://images.cocodataset.org/annotations/image_info_test2017.zip
+wget -c http://images.cocodataset.org/annotations/image_info_unlabeled2017.zip
+
+unzip annotations_trainval2017.zip
+unzip stuff_annotations_trainval2017.zip
+unzip image_info_test2017.zip
+unzip image_info_unlabeled2017.zip
+
+rm annotations_trainval2017.zip
+rm stuff_annotations_trainval2017.zip
+rm image_info_test2017.zip
+rm image_info_unlabeled2017.zip
+```
+
+#### Via the [Python API](https://github.com/cocodataset/cocoapi)
+
+```bash
+pip install pycocotools-windows
+```
 
 [Click here to see some more examples](#some-more-examples)
 
