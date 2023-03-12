@@ -12,8 +12,8 @@ import numpy as np
 cudnn.benchmark = True
 use_fbgemm = True
 
-encoder_file = 'encoder-5-300.ckpt'
-decoder_file = 'decoder-5-300.ckpt'
+encoder_file = 'encoder-15-300.ckpt'
+decoder_file = 'decoder-15-300.ckpt'
 
 encoder = EncoderCNN()
 encoder.load_state_dict(torch.load(os.path.join('models', encoder_file)))

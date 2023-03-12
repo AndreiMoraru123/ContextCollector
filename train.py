@@ -105,7 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('--attention_dim', type=int, default=300, help='dimension of attention linear layers')
     parser.add_argument('--decoder_dim', type=int, default=300, help='dimension of decoder RNN')
     parser.add_argument('--dropout', type=float, default=0.5, help='dropout')
-    parser.add_argument('--num_epochs', type=int, default=5, help='number of epochs')
+    parser.add_argument('--num_epochs', type=int, default=100, help='number of epochs')
     parser.add_argument('--batch_size', type=int, default=22, help='batch size, important for memory')
     parser.add_argument('--word_threshold', type=int, default=6, help='minimum word count threshold')
     parser.add_argument('--vocab_from_file', type=bool, default=True,
