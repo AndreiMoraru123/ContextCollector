@@ -13,13 +13,53 @@
 
 ![p1](https://user-images.githubusercontent.com/81184255/203029962-e26562e9-754d-4629-8330-b54e202698f2.gif)
 
-This is the improved version of the original [Watch&Tell project](https://github.com/AndreiMoraru123/Watch-and-Tell). 
+### Trained on [COCO](https://cocodataset.org/#home) (50 GB, 2017 challenge)
 
-Check out [the old repo](https://github.com/AndreiMoraru123/Watch-and-Tell) to see what was improved and how to deal with the [Microsoft COCO dataset](https://cocodataset.org/#home).
+```bash
+%%bash
 
-Trained on the supervised 2017 challenge of image-caption pairs, using a custom data split and vocabulary generator.
+mkdir coco
+cd coco
+mkdir images
+cd images
 
-Explained in depth further down in this ```README```.
+wget -c http://images.cocodataset.org/zips/train2017.zip
+wget -c http://images.cocodataset.org/zips/val2017.zip
+wget -c http://images.cocodataset.org/zips/test2017.zip
+wget -c http://images.cocodataset.org/zips/unlabeled2017.zip
+
+unzip train2017.zip
+unzip val2017.zip
+unzip test2017.zip
+unzip unlabeled2017.zip
+
+rm train2017.zip
+rm val2017.zip
+rm test2017.zip
+rm unlabeled2017.zip
+
+cd ../
+wget -c http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+wget -c http://images.cocodataset.org/annotations/stuff_annotations_trainval2017.zip
+wget -c http://images.cocodataset.org/annotations/image_info_test2017.zip
+wget -c http://images.cocodataset.org/annotations/image_info_unlabeled2017.zip
+
+unzip annotations_trainval2017.zip
+unzip stuff_annotations_trainval2017.zip
+unzip image_info_test2017.zip
+unzip image_info_unlabeled2017.zip
+
+rm annotations_trainval2017.zip
+rm stuff_annotations_trainval2017.zip
+rm image_info_test2017.zip
+rm image_info_unlabeled2017.zip
+```
+
+#### Via the [Python API](https://github.com/cocodataset/cocoapi)
+
+```bash
+pip install pycocotools-windows
+```
 
 [Click here to see some more examples](#some-more-examples)
 
@@ -33,7 +73,8 @@ Frame goes in, caption comes out.
   <img src="https://user-images.githubusercontent.com/81184255/203052548-e60eccde-59d9-48d5-a142-b32e5a24ccb7.png" width="500"/>
 </p>
 
-#### Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
+> **Note**
+> Make sure to check the [original implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning) first, because this is the model that I am using.
 
 ![p3](https://user-images.githubusercontent.com/81184255/203030392-61463981-f6bd-4921-85f0-d0b722584dba.gif)
 
@@ -72,7 +113,7 @@ The important thing to know here is that each vocabulary generation can (and sho
 For this reason, two vocabulary hyper-parameters can be tuned:
 
 ```python
-word_threshold = 6  # minimum word count threshold (i.e. if a word occurs less than 6 times, it is discarded)
+word_threshold = 6  # minimum word count threshold (if a word occurs less than 6 times, it is discarded)
 vocab_from_file = False  # if True, load existing vocab file. If False, create vocab file from scratch
 ```
 
@@ -83,6 +124,10 @@ Building the vocabulary will generate the ```vocab.pkl``` pickle file, which can
 ![p5](https://user-images.githubusercontent.com/81184255/203030454-9c023413-e532-444f-9b97-ae4ee14034f1.gif)
 
 ## Model description
+
+### 1. [The CNN Encoder](#encoder)
+### 2. [The Attention Network](#attention)
+### 3. [The RNN Decoder](#decoder)
 
 ```math
 I \to  \text{Input ROI (region of interest)}
@@ -100,7 +145,9 @@ S = \{ S_0, S_1, ..., S_n \} \to \text{Target sequence of words}, \: S_i \in \ma
 p(S | I) \to \text{likelihood}
 ```
 
-The goal is to tweak the model's parameters in order to maximize the probability of a generated sequence being correct given a frame
+```math
+\text{The goal is to tweak the params in order to max the probability of a generated sequence being correct given a frame}
+```
 
 ```math
 \theta^{*} = \arg \max_{\theta} \log p(S|I; \theta)
@@ -112,16 +159,76 @@ The goal is to tweak the model's parameters in order to maximize the probability
 
 Then the forward feed is as follows:
 
+1. The image is first (and only once) encoded into the annotation vectors
+
 ```math
 x_{-1} = \text{CNN}(I)
 ```
 
+2. The context vectors are calculated from both the encoder output, and the hidden state (initially a mean of the encoder output), using Bahdanau alignments.
+
 ```math
-x_t = \text{WeSt}, t \in \{0, \dots, N-1\}
+x_t = \text{WeSt}, t \in \{0, \dots, N-1\} \to \text{ this is a joint embedding representation of the context vector}
 ```
+
+3. The model outputs the probability for the next word, given the current word (the first being the `<start>` token). It keeps on going until it reaches the `<end>` token.
 
 ```math
 p_{t+1} = \text{LSTM}(x_t), t \in \{0, \dots, N-1\}
+```
+
+The attention itself is the alignment between the encoder's output (vision) and the decoder hidden state (language):
+
+```math
+e_t = f_{\text{att}}(a, h_{t-1}) \quad\text{(a miniature neural network with a non-linear activation of two linear combinations)}
+```
+
+```math
+h_{t-1} = \text{hidden state} \quad\text{ and} \quad a = \text{annotation vectors}
+```
+
+```math
+$$a = {a_1, a_2, ..., a_L} \in \mathbb{R}^D \quad (D = 2048, L = 28 \times 28)$$
+```
+
+```math
+\text{In this equation, $a$ represents the output feature map of the encoder, which is a collection of $L$ activations}
+```
+
+```math
+\text{Each activation $a_i$ corresponds to a pixel in the input image, and is a vector of dimension $D=2048$} 
+```
+
+```math
+\text{obtained by projecting the pixel features into a high-dimensional space.}
+```
+
+```math
+\text{Collectively, the feature map $a$ captures information about the contents of the input image}
+```
+
+```math
+\alpha_{t,i} = \frac{\exp(e_t)}{\sum_k \exp(e_{t,k})} \quad\text{(probability of each pixel worth being attended to)}
+```
+
+```math
+\quad\text{(results in the instance segmentation-like effect seen in the paper)}
+```
+
+```math
+awe = f_i({a_i}, {\alpha_i}) = \beta \sum_i [a_i, \alpha_i] \quad\text{(attention weighted encoding)}
+```
+
+```math
+\quad\text{(element-wise multiplication of each pixel and its probability)}
+```
+
+```math
+\quad\text{(achieves a weighted sum vector when added up across the pixels' dimensionality)}
+```
+
+```math
+\beta = \sigma(f_b(h_{t-1})) \quad\text{(gating scalar used in the paper to achieve better results)}
 ```
 
 The expansion mechanism builts upon detection in the following way:
@@ -133,10 +240,6 @@ The expansion mechanism builts upon detection in the following way:
 Which means any time none of the output words match the prediction of the detector, the ROI in which the model looks is resized, therefore allowing the model to "collect more context". In this case, `label` is the category prediction of YOLO.
 
 As found in [model.py](https://github.com/AndreiMoraru123/ContextCollector/blob/main/model.py)
-
-### 1. [The CNN Encoder](#encoder)
-### 2. [The Attention Network](#attention)
-### 3. [The RNN Decoder](#decoder)
 
 <img align="left" src="https://user-images.githubusercontent.com/81184255/203086410-5f872451-1fbc-41a8-a624-3d8ebb11c35a.png" />
 
