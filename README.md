@@ -96,7 +96,7 @@ One of the very newest (time of writing: fall 2022) is [___Google's LM-Nav___](h
 
 ## Vocabulary and Data
 
-As the official dataset homespage states, "COCO is a large-scale object detection, segmentation, and captioning dataset".
+As the official dataset homepage states, "COCO is a large-scale object detection, segmentation, and captioning dataset".
 
 For this particular model, I am concerned with detection and captioning.
 
