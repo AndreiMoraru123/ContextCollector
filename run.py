@@ -1,8 +1,10 @@
 import argparse
+import skimage
+import imutils
+import matplotlib.cm as cm
 from YOLO.utils import *
 from cv2 import cuda
 from pipeline import *
-import imutils
 
 if cuda.getCudaEnabledDeviceCount() > 0:
     cuda.setDevice(0)
@@ -130,6 +132,44 @@ def predict_video(video, expand=0.05, backend="cuda", k=5, conf=0.7, nms=0.01):
             break
 
     cap.release()
+
+
+def visualize_att(image, seq, alphas, rev_word_map, smooth=False):
+    """
+    Visualizes caption with weights at every word.
+    Adapted from paper authors' repo: https://github.com/kelvinxu/arctic-captions/blob/master/alpha_visualization.ipynb
+    :param image_path: path to image that has been captioned
+    :param seq: caption
+    :param alphas: weights
+    :param rev_word_map: reverse word mapping, i.e. ix2word
+    :param smooth: smooth weights?
+    """
+    # image = Image.open(image_path)
+    # image = image.resize([1500, 1500], Image.LANCZOS)
+    plt.figure(figsize=(100, 100))
+
+    words = [rev_word_map[ind] for ind in seq]
+    print(words)
+
+    for t in range(len(words)):
+        if t > 50:
+            break
+        plt.subplot(int(np.ceil(len(words) / 5)), 5, t + 1)
+
+        plt.text(0, 1, '%s' % (words[t]), color='black', backgroundcolor='white', fontsize=12)
+        plt.imshow(image)
+        current_alpha = alphas[t, :]
+        if smooth:
+            alpha = skimage.transform.pyramid_expand(current_alpha.numpy(), upscale=24, sigma=8)
+        else:
+            alpha = skimage.transform.resize(current_alpha.numpy(), [np.shape(image)[0], np.shape(image)[1]])
+        if t == 0:
+            plt.imshow(alpha, alpha=0)
+        else:
+            plt.imshow(alpha, alpha=0.8)
+        plt.set_cmap(cm.Greys_r)
+        plt.axis('off')
+    plt.show()
 
 
 if __name__ == '__main__':
