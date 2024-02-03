@@ -17,7 +17,8 @@
 ```bash
 git clone https://github.com/AndreiMoraru123/ContextCollector.git
 cd ContextCollector
-make
+chmod +x make
+./make
 ```
 
 #### Via the [Python API](https://github.com/cocodataset/cocoapi)
