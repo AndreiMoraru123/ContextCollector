@@ -158,11 +158,11 @@ $$a = {a_1, a_2, ..., a_L} \in \mathbb{R}^D \quad (D = 2048, L = 28 \times 28)$$
 ```
 
 ```math
-\text{In this equation, $a$ represents the output feature map of the encoder, which is a collection of $L$ activations}
+\text{In this equation, } a \text{ represents the output feature map of the encoder, which is a collection of } L \text{ activations}
 ```
 
 ```math
-\text{Each activation $a_i$ corresponds to a pixel in the input image, and is a vector of dimension $D=2048$} 
+\text{Each activation } a_i \text{ corresponds to a pixel in the input image, and is a vector of dimension } D=2048
 ```
 
 ```math
